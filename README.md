@@ -1,4 +1,4 @@
-# Projeto de locação de transportes urbanos - Desktop
+# Projeto de locação de veículos urbanos - Desktop
 Software desktop para o projeto de locação de veículos urbanos. Projeto de conclusão do curso Técnico de Informática.
 
 **Boas práticas**
