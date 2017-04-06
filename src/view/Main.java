@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) {        
 		WindowManager wm = new WindowManager();
 		wm.abrirJanela(primaryStage, "/view/Login.fxml");
 	}
