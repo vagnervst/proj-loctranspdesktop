@@ -23,7 +23,7 @@
                 <MenuItem mnemonicParsing="false" text="Cadastrar Cliente" />
               </items>
             </MenuButton>
-            <Button layoutX="174.0" layoutY="13.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Gerência" />
+            <Button fx:id="btnGerencia" layoutX="174.0" layoutY="13.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Gerência" onAction="#abrirGerencia" />
         </items>
       </ToolBar>
       <TitledPane animated="false" collapsible="false" layoutX="15.0" layoutY="50.0" prefHeight="200.0" prefWidth="670.0" text="Minhas informações">

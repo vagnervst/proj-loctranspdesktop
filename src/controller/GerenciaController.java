@@ -3,22 +3,21 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import view.WindowManager;
+import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
 
-public class PublicacoesController implements Initializable {
+public class GerenciaController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+
 	}
 
-	@FXML
-	public void abrirCadastroPublicacao(ActionEvent event) {
+	@FXML public void abrirEmpresa(ActionEvent event) {
 		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/NovaPublicacao.fxml");
+		wm.abrirModal("/view/Empresa.fxml");
 	}
-
 }

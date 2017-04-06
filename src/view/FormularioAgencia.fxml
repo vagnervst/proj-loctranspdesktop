@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormularioAgenciaController">
    <children>
       <VBox layoutX="88.0" layoutY="225.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
          <children>
@@ -86,7 +86,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" />
+                                                <ComboBox fx:id="cbEstado" prefHeight="30.0" prefWidth="150.0" />
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="5.0" right="5.0" />
@@ -99,7 +99,7 @@
                                                       <Font size="14.0" />
                                                    </font>
                                                 </Label>
-                                                <ComboBox prefHeight="30.0" prefWidth="150.0" />
+                                                <ComboBox fx:id="cbCidade" prefHeight="30.0" prefWidth="150.0" />
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="5.0" right="5.0" />
@@ -145,7 +145,7 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <ComboBox prefHeight="30.0" prefWidth="200.0" />
+                                          <ComboBox fx:id="cbPerfilNivelAcesso" prefHeight="30.0" prefWidth="200.0" />
                                        </children>
                                        <VBox.margin>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
