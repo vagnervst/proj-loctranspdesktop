@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111">
+<AnchorPane prefHeight="600.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.PerfisNivelAcessoController">
    <children>
       <VBox layoutX="177.0" layoutY="149.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -23,10 +23,10 @@
             </TableView>
             <HBox>
                <children>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Editar" />
+                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Editar" onAction="#editar" />
                   <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cadastrar" />
+                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cadastrar" onAction="#cadastrar" />
                      </children>
                   </HBox>
                </children>

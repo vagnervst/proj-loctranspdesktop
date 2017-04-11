@@ -3,10 +3,10 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import view.WindowManager;
-import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
 
 public class GerenciaController implements Initializable {
 
@@ -17,7 +17,6 @@ public class GerenciaController implements Initializable {
 	}
 
 	@FXML public void abrirEmpresa(ActionEvent event) {
-		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/Empresa.fxml");
+		WindowManager.abrirModal("/view/Empresa.fxml", getClass());
 	}
 }

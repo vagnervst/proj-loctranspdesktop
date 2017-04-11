@@ -171,10 +171,10 @@
                      <children>
                         <HBox alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover" />
+                              <Button fx:id="btnRemover" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover" onAction="#remover" />
                               <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar">
+                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar" onAction="#cancelar">
                                        <HBox.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </HBox.margin>

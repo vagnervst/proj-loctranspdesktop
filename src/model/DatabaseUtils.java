@@ -201,15 +201,15 @@ public class DatabaseUtils {
 	}
 	
 	protected ResultSet executarQuery(String query) {
-		PreparedStatement statement = this.preparar_statement(query);
-
+		PreparedStatement statement = this.preparar_statement(query);		
+				
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
 	
 	protected ResultSet executarQuery(String query, List<Object> parametros) {
-		PreparedStatement statement = this.preparar_statement(query, parametros);
-
+		PreparedStatement statement = this.preparar_statement(query, parametros);		
+		
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
@@ -224,7 +224,8 @@ public class DatabaseUtils {
 	
 	protected boolean executarQueryAlteracao(String query, List<Object> parametros) {
 		PreparedStatement statement = this.preparar_statement(query, parametros);
-				
+		
+		System.out.println( statement );
 		boolean resultado = boolean_from_statement(statement);
 		return resultado;
 	}
@@ -280,7 +281,34 @@ public class DatabaseUtils {
 
 		return statement;
 	}
-
+	
+	protected List<Map> get_list_from_result_set(ResultSet resultados, List<String> nome_colunas) {
+		
+		List<Map> registros = new ArrayList<>();		
+		try {
+			while( resultados.next() ) {
+				Map<String, Object> registro = new HashMap<String, Object>();
+				
+				for( String nome_coluna : nome_colunas ) {
+					Class tipo_valor = resultados.getObject( nome_coluna ).getClass();
+					
+					if( tipo_valor.isInstance( resultados.getObject( nome_coluna ) ) ) {
+						Object valor = resultados.getObject( nome_coluna );
+						valor = tipo_valor.cast(valor);
+						registro.put(nome_coluna, valor);
+					}
+				}
+								
+				registros.add( registro );
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return registros;
+	}
+	
 	protected <T extends DatabaseUtils> List<T> get_list_from_result_set(ResultSet resultados, Class<T> tipo) {
 
 		List<T> lista = new ArrayList<>();
@@ -288,8 +316,8 @@ public class DatabaseUtils {
 			while (resultados.next()) {
 				DatabaseUtils objeto = this.getInstanceOfT(this.getClass());
 
-				Object[] campos = this.get_campos(true).toArray();
-
+				Object[] campos = this.get_campos(true).toArray();				
+				
 				for (int i = 0; i < campos.length; ++i) {
 					String nome_campo = String.valueOf( campos[i] );
 					Object valor_campo = resultados.getObject( nome_campo );
@@ -322,7 +350,7 @@ public class DatabaseUtils {
 		String query = "SELECT * FROM " + this.get_nome_tabela() + " ";
 		query += "WHERE " + where;
 
-		ResultSet resultados = this.executarQuery( query );
+		ResultSet resultados = this.executarQuery( query, parametros );
 
 		List<T> lista_resultados = this.get_list_from_result_set(resultados, tipo);
 		return lista_resultados;
@@ -385,7 +413,7 @@ public class DatabaseUtils {
 	public boolean atualizar() {
 		String query = "UPDATE " + this.get_nome_tabela() + " SET ";
 
-		Map<String, Object> campo_valor = this.get_campos_valor(false);
+		Map<String, Object> campo_valor = this.get_campos_valor(true);
 
 		int contador = 0;
 
@@ -405,7 +433,7 @@ public class DatabaseUtils {
 		}
 
 		query += " WHERE id = " + campo_valor.get("id");
-
+		
 		return this.executarQueryAlteracao(query, valores);
 	}
 

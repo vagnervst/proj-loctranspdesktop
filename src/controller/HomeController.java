@@ -21,14 +21,12 @@ public class HomeController implements Initializable {
 
 	@FXML
 	public void abrirPublicacoes(ActionEvent event) {
-		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/Publicacoes.fxml");
+		WindowManager.abrirModal("/view/Publicacoes.fxml", getClass());
 	}
 
 	@FXML
 	public void abrirGerencia(ActionEvent event) {
-		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/Gerencia.fxml");
+		WindowManager.abrirModal("/view/Gerencia.fxml", getClass());
 	}
 
 }

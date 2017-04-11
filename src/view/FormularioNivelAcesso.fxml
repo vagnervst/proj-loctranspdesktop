@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormularioPerfilNivelAcessoController">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -40,7 +40,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField prefHeight="30.0" promptText="Digite o titulo do nivel de acesso..." />
+                              <TextField fx:id="txtTitulo" prefHeight="30.0" promptText="Digite o titulo do nivel de acesso..." />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />

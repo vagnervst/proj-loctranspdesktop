@@ -17,8 +17,7 @@ public class PublicacoesController implements Initializable {
 
 	@FXML
 	public void abrirCadastroPublicacao(ActionEvent event) {
-		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/NovaPublicacao.fxml");
+		WindowManager.abrirModal("/view/NovaPublicacao.fxml", getClass());
 	}
 
 }

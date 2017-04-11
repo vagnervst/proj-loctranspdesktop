@@ -3,10 +3,10 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import view.WindowManager;
-import javafx.fxml.FXML;
-import javafx.event.ActionEvent;
 
 public class EmpresaController implements Initializable {
 
@@ -17,13 +17,15 @@ public class EmpresaController implements Initializable {
 	}
 
 	@FXML public void abrirAgencias(ActionEvent event) {
-		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/Agencias.fxml");
+		WindowManager.abrirModal("/view/Agencias.fxml", getClass());
 	}    
          
 	@FXML public void abrirFuncionarios(ActionEvent event) {
-		WindowManager wm = new WindowManager();
-		wm.abrirModal("/view/Funcionarios.fxml"); 
+		WindowManager.abrirModal("/view/Funcionarios.fxml", getClass()); 
+	}
+
+	@FXML public void abrirPerfisNivelAcesso(ActionEvent event) {
+		WindowManager.abrirModal("/view/PerfisNivelAcesso.fxml", getClass());
 	}
 
 }
