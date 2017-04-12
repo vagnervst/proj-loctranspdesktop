@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,10 +56,10 @@ public class DatabaseUtils {
 					valor = campo.getType().getClass();
 				}
 
-				if (!campo.getName().equals("nome_tabela")) {										
-					
+				if (!campo.getName().equals("nome_tabela")) {
+
 					if( campo.getName().equals("id") ) {
-						
+
 						if( incluir_id )
 							array_keys.put(campo.getName(), valor);
 					} else {
@@ -174,8 +175,8 @@ public class DatabaseUtils {
 		return resultado;
 	}
 	
-	protected ResultSet resultado_from_statement(PreparedStatement statement) {		
-		
+	protected ResultSet resultado_from_statement(PreparedStatement statement) {
+
 		ResultSet resultado = null;
 		try {
 			resultado = statement.executeQuery();
@@ -183,37 +184,66 @@ public class DatabaseUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return resultado;
 	}
-	
-	protected boolean boolean_from_statement(PreparedStatement statement) {				
+
+	protected boolean boolean_from_statement(PreparedStatement statement) {
 		boolean resultado = false;
-		
+
 		try {
 			resultado = statement.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		return resultado;
+	}
+	
+	protected int key_from_statement(PreparedStatement statement) {
+		int resultado = -1;
 		
-		return resultado;		
+		try {
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			ResultSet generatedKeys = statement.getGeneratedKeys();
+			if( generatedKeys.next() ) {			
+				resultado = generatedKeys.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return resultado;
+	}
+	
+	protected int executarQueryGetKey(String query, List<Object> valores) {
+		PreparedStatement statement = this.preparar_statement_keys(query, valores);
+
+		int resultado = key_from_statement(statement);
+		return resultado;
 	}
 	
 	protected ResultSet executarQuery(String query) {
 		PreparedStatement statement = this.preparar_statement(query);		
-				
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
-	
+
 	protected ResultSet executarQuery(String query, List<Object> parametros) {
 		PreparedStatement statement = this.preparar_statement(query, parametros);		
 		
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
-	
+
 	protected boolean executarQueryAlteracao(String query) {
 		PreparedStatement statement = this.preparar_statement(query);
 
@@ -221,11 +251,10 @@ public class DatabaseUtils {
 
 		return resultado;
 	}
-	
+
 	protected boolean executarQueryAlteracao(String query, List<Object> parametros) {
 		PreparedStatement statement = this.preparar_statement(query, parametros);
-		
-		System.out.println( statement );
+		System.out.println(statement);
 		boolean resultado = boolean_from_statement(statement);
 		return resultado;
 	}
@@ -233,12 +262,25 @@ public class DatabaseUtils {
 	protected int get_tipo_sql_correspondente(Class<? extends Object> classe) {
 		return relacao_tipos_sql_java.get(classe);
 	}
-
+	
+	protected Statement criar_statement() {
+		Database db = new Database();
+		
+		try {
+			return db.getConexao().createStatement();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	protected PreparedStatement preparar_statement(String query) {
 		Database db = new Database();
 
 		PreparedStatement statement = null;
-				
+
 		try {
 			statement = db.getConexao().prepareStatement(query);
 		} catch (SQLException e) {
@@ -248,24 +290,24 @@ public class DatabaseUtils {
 
 		return statement;
 	}
-
-	protected PreparedStatement preparar_statement(String query, List<Object> parametros) {
+	
+	protected PreparedStatement preparar_statement_keys(String query, List<Object> parametros) {
 		Database db = new Database();
-				
+
 		PreparedStatement statement = null;
 
 		try {
-			statement = db.getConexao().prepareStatement(query);
+			statement = db.getConexao().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		if (statement != null) {
-			
+		if (statement != null && parametros != null) {
+
 			int indice_parametro = 1;
 			for( Object parametro : parametros ) {
-				
+
 				int tipo_sql_valor = this.get_tipo_sql_correspondente( parametro.getClass() );
 				try {
 					statement.setObject(indice_parametro, parametro, tipo_sql_valor);
@@ -281,34 +323,71 @@ public class DatabaseUtils {
 
 		return statement;
 	}
-	
+
+	protected PreparedStatement preparar_statement(String query, List<Object> parametros) {
+		Database db = new Database();
+
+		PreparedStatement statement = null;
+
+		try {
+			statement = db.getConexao().prepareStatement(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (statement != null && parametros != null) {
+
+			int indice_parametro = 1;
+			for( Object parametro : parametros ) {
+
+				int tipo_sql_valor = this.get_tipo_sql_correspondente( parametro.getClass() );
+				try {
+					statement.setObject(indice_parametro, parametro, tipo_sql_valor);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				++indice_parametro;
+			}
+
+		}
+
+		return statement;
+	}
+
 	protected List<Map> get_list_from_result_set(ResultSet resultados, List<String> nome_colunas) {
-		
-		List<Map> registros = new ArrayList<>();		
+
+		List<Map> registros = new ArrayList<>();
 		try {
 			while( resultados.next() ) {
 				Map<String, Object> registro = new HashMap<String, Object>();
-				
+
 				for( String nome_coluna : nome_colunas ) {
-					Class tipo_valor = resultados.getObject( nome_coluna ).getClass();
-					
-					if( tipo_valor.isInstance( resultados.getObject( nome_coluna ) ) ) {
-						Object valor = resultados.getObject( nome_coluna );
-						valor = tipo_valor.cast(valor);
-						registro.put(nome_coluna, valor);
+					if( resultados.getObject(nome_coluna) == null ) {
+						registro.put(nome_coluna, null);
+					} else {				
+						Class tipo_valor = resultados.getObject( nome_coluna ).getClass();
+	
+						if( tipo_valor.isInstance( resultados.getObject( nome_coluna ) ) ) {
+							Object valor = resultados.getObject( nome_coluna );
+							valor = tipo_valor.cast(valor);
+							registro.put(nome_coluna, valor);
+						}
 					}
 				}
-								
+
 				registros.add( registro );
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return registros;
 	}
-	
+
 	protected <T extends DatabaseUtils> List<T> get_list_from_result_set(ResultSet resultados, Class<T> tipo) {
 
 		List<T> lista = new ArrayList<>();
@@ -316,12 +395,12 @@ public class DatabaseUtils {
 			while (resultados.next()) {
 				DatabaseUtils objeto = this.getInstanceOfT(this.getClass());
 
-				Object[] campos = this.get_campos(true).toArray();				
-				
+				Object[] campos = this.get_campos(true).toArray();
+
 				for (int i = 0; i < campos.length; ++i) {
 					String nome_campo = String.valueOf( campos[i] );
 					Object valor_campo = resultados.getObject( nome_campo );
-					
+
 					objeto.set_campo_valor(objeto, nome_campo, valor_campo);
 				}
 
@@ -354,23 +433,23 @@ public class DatabaseUtils {
 
 		List<T> lista_resultados = this.get_list_from_result_set(resultados, tipo);
 		return lista_resultados;
-	}	
-	
+	}
+
 	public Map<String, Object> get_campos_preenchidos() {
 		Map<String, Object> campos = this.get_campos_valor(false);
-		
+
 		Map<String, Object> campos_preenchidos = new HashMap<String, Object>();
 		for (Map.Entry<String, Object> entry : campos.entrySet()){
-			
+
 			if( entry.getValue() != null ) {
 				campos_preenchidos.put(entry.getKey(), entry.getValue());
 			}
 		}
-		
+
 		return campos_preenchidos;
 	}
-	
-	public boolean inserir() {
+
+	public int inserir() {
 		Map<String, Object> campos_chave_valor = this.get_campos_preenchidos();
 
 		String query = "INSERT INTO " + this.get_nome_tabela() + " ";
@@ -378,7 +457,7 @@ public class DatabaseUtils {
 		query += "(";
 		int contador = 0;
 		for (Map.Entry<String, Object> entry : campos_chave_valor.entrySet()) {
-						
+
 			if( entry.getValue() != null ) {
 				++contador;
 				query += entry.getKey();
@@ -389,51 +468,92 @@ public class DatabaseUtils {
 			}
 		}
 		query += ") ";
-		
+
 		query += "VALUES(";
-				
-		List<Object> valores = new ArrayList<>();		
+
+		List<Object> valores = new ArrayList<>();
 		int contador_valores = 0;
-		for (Map.Entry<String, Object> entry : campos_chave_valor.entrySet()) {			
+		for (Map.Entry<String, Object> entry : campos_chave_valor.entrySet()) {
 			query += "?";
-			valores.add( entry.getValue() );			
-									
+			valores.add( entry.getValue() );
+
 			if (contador_valores < campos_chave_valor.size() - 1) {
 				query += ", ";
 			}
-            
+
             ++contador_valores;
 		}
-				
+
 		query += ")";
-				
-		return this.executarQueryAlteracao(query, valores);
+
+		return this.executarQueryGetKey(query, valores);
+	}
+	
+	public int inserirGetKey() {
+		Map<String, Object> campos_chave_valor = this.get_campos_preenchidos();
+
+		String query = "INSERT INTO " + this.get_nome_tabela() + " ";
+
+		query += "(";
+		int contador = 0;
+		for (Map.Entry<String, Object> entry : campos_chave_valor.entrySet()) {
+
+			if( entry.getValue() != null ) {
+				++contador;
+				query += entry.getKey();
+
+				if (contador < campos_chave_valor.size()) {
+					query += ", ";
+				}
+			}
+		}
+		query += ") ";
+
+		query += "VALUES(";
+
+		List<Object> valores = new ArrayList<>();
+		int contador_valores = 0;
+		for (Map.Entry<String, Object> entry : campos_chave_valor.entrySet()) {
+			query += "?";
+			valores.add( entry.getValue() );
+
+			if (contador_valores < campos_chave_valor.size() - 1) {
+				query += ", ";
+			}
+
+            ++contador_valores;
+		}
+
+		query += ")";
+		
+		return this.executarQueryGetKey(query, valores);
 	}
 	
 	public boolean atualizar() {
 		String query = "UPDATE " + this.get_nome_tabela() + " SET ";
 
 		Map<String, Object> campo_valor = this.get_campos_valor(true);
-
+		System.out.println( campo_valor );
+		
 		int contador = 0;
 
 		List<Object> valores = new ArrayList<>();
 		for (Map.Entry<String, Object> entry : campo_valor.entrySet()) {
-
+			++contador;
+			
 			if (!entry.getKey().equals("id")) {
 				query += entry.getKey() + " = ?";
 				valores.add(entry.getValue());
-
+				
 				if (contador < campo_valor.size() - 1) {
 					query += ", ";
 				}
 			}
-
-			++contador;
+				
 		}
 
 		query += " WHERE id = " + campo_valor.get("id");
-		
+
 		return this.executarQueryAlteracao(query, valores);
 	}
 

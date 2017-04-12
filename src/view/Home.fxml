@@ -40,7 +40,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <Label text="XXXXXXXXX">
+                        <Label fx:id="lblNomeEmpresa" text="XXXXXXXXX">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -49,7 +49,7 @@
                   </HBox>
                   <HBox layoutX="14.0" layoutY="41.0" prefHeight="27.0" AnchorPane.topAnchor="30.0">
                      <children>
-                        <Label prefHeight="27.0" text="Nome do Funcionário">
+                        <Label fx:id="lblNomeFuncionario" prefHeight="27.0" text="Nome do Funcionário">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -69,7 +69,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <Label layoutX="10.0" layoutY="10.0" text="XXXXXXXXX">
+                        <Label fx:id="lblNivelAcesso" layoutX="10.0" layoutY="10.0" text="XXXXXXXXX">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -86,7 +86,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <Label layoutX="10.0" layoutY="10.0" prefHeight="0.0" text="XXXXXXXXX">
+                        <Label fx:id="lblAgencia" layoutX="10.0" layoutY="10.0" prefHeight="0.0" text="XXXXXXXXX">
                            <font>
                               <Font size="18.0" />
                            </font>

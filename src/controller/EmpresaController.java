@@ -18,14 +18,14 @@ public class EmpresaController implements Initializable {
 
 	@FXML public void abrirAgencias(ActionEvent event) {
 		WindowManager.abrirModal("/view/Agencias.fxml", getClass());
-	}    
-         
+	}
+
 	@FXML public void abrirFuncionarios(ActionEvent event) {
-		WindowManager.abrirModal("/view/Funcionarios.fxml", getClass()); 
+		WindowManager.abrirModal("/view/Funcionarios.fxml", getClass());
 	}
 
 	@FXML public void abrirPerfisNivelAcesso(ActionEvent event) {
-		WindowManager.abrirModal("/view/PerfisNivelAcesso.fxml", getClass());
+		WindowManager.abrirModal("/view/NiveisAcesso.fxml", getClass());
 	}
 
 }

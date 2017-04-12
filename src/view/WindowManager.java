@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 public class WindowManager {
@@ -35,7 +34,7 @@ public class WindowManager {
 			Parent root = FXMLLoader.load( classe.getResource( caminho_fxml ) );
 			
 			stage.setScene(new Scene(root));
-			stage.initStyle(StageStyle.UTILITY);
+			//stage.initStyle(StageStyle.UTILITY);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.show();
 		} catch (IOException e) {

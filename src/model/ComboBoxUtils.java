@@ -30,6 +30,10 @@ public class ComboBoxUtils {
 		thread.start();
 	}
 	
+	public static <T extends DatabaseUtils> void popular_combobox(ComboBox combo_box, List<T> t) {
+		combo_box.getItems().addAll( t );
+	}
+	
 	public static <T extends DatabaseUtils> void popular_combobox(ComboBox combo_box, String where, List<Object> parametros, T t) {
 		
 		Task<List<? extends DatabaseUtils>> task_get_dados = new Task<List<? extends DatabaseUtils>>() {

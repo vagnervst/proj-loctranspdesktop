@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormularioPerfilNivelAcessoController">
+<AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormularioNivelAcessoController">
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
    </padding>
@@ -40,7 +39,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtTitulo" prefHeight="30.0" promptText="Digite o titulo do nivel de acesso..." />
+                              <TextField fx:id="txtTituloNivelAcesso" prefHeight="30.0" promptText="Digite o titulo do nivel de acesso..." />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -53,15 +52,10 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TableView prefHeight="184.0" prefWidth="200.0">
-                                <columns>
-                                  <TableColumn prefWidth="264.0" text="Titulo" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="175.0" text="Permissões" />
-                                </columns>
-                              </TableView>
+                              <TableView fx:id="tblTelasPermitidas" prefHeight="184.0" prefWidth="200.0" />
                               <HBox>
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover" />
+                                    <Button fx:id="btnRemoverTela" mnemonicParsing="false" onAction="#removerTela" prefHeight="30.0" prefWidth="100.0" text="Remover Tela" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="10.0" />
@@ -74,10 +68,15 @@
                         </VBox>
                         <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar" />
+                              <Button fx:id="btnRemoverNivel" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover Nível" onAction="#removerNivel" />
                               <HBox alignment="BOTTOM_RIGHT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Concluido" />
+                                    <Button fx:id="btnCancelar" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar">
+                                       <HBox.margin>
+                                          <Insets right="5.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="btnConcluido" mnemonicParsing="false" onAction="#concluir" prefHeight="30.0" prefWidth="100.0" text="Concluido" />
                                  </children>
                               </HBox>
                            </children>
@@ -102,19 +101,6 @@
                            </font>
                         </Label>
                         <Separator prefWidth="200.0" />
-                        <VBox>
-                           <children>
-                              <Label text="Módulo:">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox prefHeight="30.0" prefWidth="200.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </VBox>
                         <VBox layoutX="10.0" layoutY="50.0">
                            <children>
                               <Label text="Tela:">
@@ -122,7 +108,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <ComboBox prefHeight="30.0" prefWidth="200.0" />
+                              <ComboBox fx:id="cbTelas" prefHeight="30.0" prefWidth="200.0" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -134,22 +120,22 @@
                                  <children>
                                     <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <CheckBox mnemonicParsing="false" text="Leitura">
+                                          <CheckBox fx:id="chkLeitura" mnemonicParsing="false" text="Leitura">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                           </CheckBox>
-                                          <CheckBox layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Escrita">
+                                          <CheckBox fx:id="chkEscrita" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Escrita">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                           </CheckBox>
-                                          <CheckBox layoutX="10.0" layoutY="27.0" mnemonicParsing="false" text="Modificação">
+                                          <CheckBox fx:id="chkModificacao" layoutX="10.0" layoutY="27.0" mnemonicParsing="false" text="Modificação">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
                                           </CheckBox>
-                                          <CheckBox layoutX="10.0" layoutY="44.0" mnemonicParsing="false" text="Remoção">
+                                          <CheckBox fx:id="chkRemocao" layoutX="10.0" layoutY="44.0" mnemonicParsing="false" text="Remoção">
                                              <VBox.margin>
                                                 <Insets bottom="5.0" top="5.0" />
                                              </VBox.margin>
@@ -168,7 +154,7 @@
                         </TitledPane>
                         <HBox>
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Adicionar" />
+                              <Button fx:id="btnAdicionarTela" mnemonicParsing="false" onAction="#adicionarTela" prefHeight="30.0" prefWidth="100.0" text="Adicionar" />
                            </children>
                            <VBox.margin>
                               <Insets top="5.0" />

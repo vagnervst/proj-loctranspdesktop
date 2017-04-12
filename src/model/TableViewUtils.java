@@ -51,8 +51,8 @@ public class TableViewUtils {
                 public TableCell call(TableColumn p) {
                     return new TextFieldTableCell(new StringConverter() {
                         @Override
-                        public String toString(Object t) {
-                            return t.toString();
+                        public String toString(Object t) {                        	
+                            return (t != null)? t.toString() : "";
                         }
                         @Override
                         public Object fromString(String string) {
