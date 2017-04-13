@@ -10,20 +10,19 @@ import model.DatabaseUtils;
 public class Agencia extends DatabaseUtils {
 	private final String nome_tabela = "tbl_agencia";
 	
-	private int id, idCidade, idEmpresa, idPerfilNivelAcesso;
+	private int id, idCidade, idEmpresa;
 	private String titulo, telefone, email, endereco;
 	
 	public Agencia() {
 		
 	}
 	
-	public Agencia(String titulo, String telefone, String email, String endereco, int idCidade, int idPerfilNivelAcesso, int idEmpresa) {
+	public Agencia(String titulo, String telefone, String email, String endereco, int idCidade, int idEmpresa) {
 		this.titulo = titulo;
 		this.telefone = telefone;
 		this.email = email;
 		this.endereco = endereco;
-		this.idCidade = idCidade;
-		this.idPerfilNivelAcesso = idPerfilNivelAcesso;
+		this.idCidade = idCidade;		
 		this.idEmpresa = idEmpresa;
 	}
 	
@@ -98,11 +97,6 @@ public class Agencia extends DatabaseUtils {
 	public int getId() {
 		return id;
 	}
-
-	public int getIdPerfilNivelAcesso() {
-		return idPerfilNivelAcesso;
-	}	
-	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

@@ -28,10 +28,12 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@FXML public void login() {
+		txtEmail.setText("juridico@email.com");
+		txtSenha.setText("123");
+
 		String email = txtEmail.getText().trim();
 		String senha = txtSenha.getText().trim();
 

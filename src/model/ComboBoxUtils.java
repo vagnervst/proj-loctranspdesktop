@@ -20,8 +20,8 @@ public class ComboBoxUtils {
 			@Override
 			protected void succeeded() {
 				// TODO Auto-generated method stub
-				super.succeeded();
-				System.out.println( getValue() );
+				super.succeeded();				
+				combo_box.getItems().clear();
 				combo_box.getItems().addAll( getValue() );				
 			}
 		};
@@ -31,6 +31,7 @@ public class ComboBoxUtils {
 	}
 	
 	public static <T extends DatabaseUtils> void popular_combobox(ComboBox combo_box, List<T> t) {
+		combo_box.getItems().clear();
 		combo_box.getItems().addAll( t );
 	}
 	
@@ -47,7 +48,8 @@ public class ComboBoxUtils {
 			@Override
 			protected void succeeded() {
 				// TODO Auto-generated method stub
-				super.succeeded();				
+				super.succeeded();
+				combo_box.getItems().clear();
 				combo_box.getItems().addAll( getValue() );				
 			}
 		};

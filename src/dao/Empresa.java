@@ -5,7 +5,7 @@ import model.DatabaseUtils;
 public class Empresa extends DatabaseUtils {
 	private String nome_tabela = "tbl_empresa";
 	private int id, idUsuarioJuridico;
-	private String razaoSocial, nomeFantasia, cnpj, logomarca;
+	private String razaoSocial, nomeHost, nomeFantasia, cnpj, logomarca;
 	
 	public String getNome_tabela() {
 		return nome_tabela;
@@ -48,6 +48,12 @@ public class Empresa extends DatabaseUtils {
 	}
 	public void setLogomarca(String logomarca) {
 		this.logomarca = logomarca;
+	}
+	public String getNomeHost() {
+		return nomeHost;
+	}
+	public void setNomeHost(String nomeHost) {
+		this.nomeHost = nomeHost;
 	}
 	
 	

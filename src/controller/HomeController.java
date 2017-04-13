@@ -25,6 +25,7 @@ public class HomeController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
+
 		Empresa empresa_alvo = new Empresa();
 		empresa_alvo = empresa_alvo.buscar("idUsuarioJuridico = ?", Arrays.asList( Login.get_id_usuario() ), Empresa.class).get(0);
 
@@ -44,5 +45,4 @@ public class HomeController implements Initializable {
 	public void abrirGerencia(ActionEvent event) {
 		WindowManager.abrirModal("/view/Gerencia.fxml", getClass());
 	}
-
 }

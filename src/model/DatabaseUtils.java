@@ -174,7 +174,7 @@ public class DatabaseUtils {
 
 		return resultado;
 	}
-	
+
 	protected ResultSet resultado_from_statement(PreparedStatement statement) {
 
 		ResultSet resultado = null;
@@ -200,53 +200,56 @@ public class DatabaseUtils {
 
 		return resultado;
 	}
-	
+
 	protected int key_from_statement(PreparedStatement statement) {
 		int resultado = -1;
-		
+
 		try {
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
 			ResultSet generatedKeys = statement.getGeneratedKeys();
-			if( generatedKeys.next() ) {			
+			if( generatedKeys.next() ) {
 				resultado = generatedKeys.getInt(1);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return resultado;
 	}
-	
+
 	protected int executarQueryGetKey(String query, List<Object> valores) {
 		PreparedStatement statement = this.preparar_statement_keys(query, valores);
 
+		System.out.println( statement );
 		int resultado = key_from_statement(statement);
 		return resultado;
 	}
-	
+
 	protected ResultSet executarQuery(String query) {
-		PreparedStatement statement = this.preparar_statement(query);		
+		PreparedStatement statement = this.preparar_statement(query);
+
+		System.out.println(statement);
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
 
 	protected ResultSet executarQuery(String query, List<Object> parametros) {
-		PreparedStatement statement = this.preparar_statement(query, parametros);		
-		
+		PreparedStatement statement = this.preparar_statement(query, parametros);
+		System.out.println(statement);
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
 
 	protected boolean executarQueryAlteracao(String query) {
 		PreparedStatement statement = this.preparar_statement(query);
-
+		System.out.println(statement);
 		boolean resultado = boolean_from_statement(statement);
 
 		return resultado;
@@ -258,24 +261,24 @@ public class DatabaseUtils {
 		boolean resultado = boolean_from_statement(statement);
 		return resultado;
 	}
-	
+
 	protected int get_tipo_sql_correspondente(Class<? extends Object> classe) {
 		return relacao_tipos_sql_java.get(classe);
 	}
-	
+
 	protected Statement criar_statement() {
 		Database db = new Database();
-		
+
 		try {
 			return db.getConexao().createStatement();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	protected PreparedStatement preparar_statement(String query) {
 		Database db = new Database();
 
@@ -290,7 +293,7 @@ public class DatabaseUtils {
 
 		return statement;
 	}
-	
+
 	protected PreparedStatement preparar_statement_keys(String query, List<Object> parametros) {
 		Database db = new Database();
 
@@ -367,9 +370,9 @@ public class DatabaseUtils {
 				for( String nome_coluna : nome_colunas ) {
 					if( resultados.getObject(nome_coluna) == null ) {
 						registro.put(nome_coluna, null);
-					} else {				
+					} else {
 						Class tipo_valor = resultados.getObject( nome_coluna ).getClass();
-	
+
 						if( tipo_valor.isInstance( resultados.getObject( nome_coluna ) ) ) {
 							Object valor = resultados.getObject( nome_coluna );
 							valor = tipo_valor.cast(valor);
@@ -389,7 +392,7 @@ public class DatabaseUtils {
 	}
 
 	protected <T extends DatabaseUtils> List<T> get_list_from_result_set(ResultSet resultados, Class<T> tipo) {
-
+				
 		List<T> lista = new ArrayList<>();
 		try {
 			while (resultados.next()) {
@@ -488,7 +491,7 @@ public class DatabaseUtils {
 
 		return this.executarQueryGetKey(query, valores);
 	}
-	
+
 	public int inserirGetKey() {
 		Map<String, Object> campos_chave_valor = this.get_campos_preenchidos();
 
@@ -525,31 +528,31 @@ public class DatabaseUtils {
 		}
 
 		query += ")";
-		
+
 		return this.executarQueryGetKey(query, valores);
 	}
-	
+
 	public boolean atualizar() {
 		String query = "UPDATE " + this.get_nome_tabela() + " SET ";
 
 		Map<String, Object> campo_valor = this.get_campos_valor(true);
 		System.out.println( campo_valor );
-		
+
 		int contador = 0;
 
 		List<Object> valores = new ArrayList<>();
 		for (Map.Entry<String, Object> entry : campo_valor.entrySet()) {
 			++contador;
-			
+
 			if (!entry.getKey().equals("id")) {
 				query += entry.getKey() + " = ?";
 				valores.add(entry.getValue());
-				
+
 				if (contador < campo_valor.size() - 1) {
 					query += ", ";
 				}
 			}
-				
+
 		}
 
 		query += " WHERE id = " + campo_valor.get("id");

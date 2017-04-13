@@ -28,7 +28,7 @@ public class Database {
 
 		String conexao = "jdbc:mysql://" + this.host + ":3306/" + this.banco + "?user=" + this.usuario + "&password=" + this.senha;
 
-		try { 
+		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			this.conn = DriverManager.getConnection(conexao);
 		} catch (SQLException e) {

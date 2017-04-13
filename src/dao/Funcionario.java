@@ -9,21 +9,23 @@ import model.DatabaseUtils;
 
 public class Funcionario extends DatabaseUtils {
 	private String nome_tabela = "tbl_funcionario";
-	private int id, idNivelAcesso, idAgencia, statusOnline;
+	private int id, idNivelAcesso, idAgencia, idEmpresa, statusOnline;
 	private String nome, credencial, senha, telefone, celular, email;
 
 	public Funcionario() {
 
 	}
 
-	public Funcionario(String nome, String senha, String telefone, String celular, String email, int idNivelAcesso, int idAgencia) {
+	public Funcionario(String nome, String senha, String credencial, String telefone, String celular, String email, int idNivelAcesso, int idAgencia, int idEmpresa) {
 		this.nome = nome;
         this.senha = senha;
+        this.credencial = credencial;
         this.telefone = telefone;
         this.celular = celular;
         this.email = email;
         this.idNivelAcesso = idNivelAcesso;
         this.idAgencia = idAgencia;
+        this.setIdEmpresa(idEmpresa);
 	}
 
 	public List<Map> getFuncionarios() {
@@ -122,6 +124,14 @@ public class Funcionario extends DatabaseUtils {
 
 	public void setCredencial(String credencial) {
 		this.credencial = credencial;
+	}
+
+	public int getIdEmpresa() {
+		return idEmpresa;
+	}
+
+	public void setIdEmpresa(int idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
 
 

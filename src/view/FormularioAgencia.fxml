@@ -132,34 +132,6 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </TitledPane>
-                  <TitledPane animated="false" collapsible="false" layoutX="10.0" layoutY="171.0" text="Informações Empresariais">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0">
-                           <children>
-                              <VBox prefWidth="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <VBox>
-                                       <children>
-                                          <Label text="Perfil de Nível de Acesso:">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <ComboBox fx:id="cbPerfilNivelAcesso" prefHeight="30.0" prefWidth="200.0" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                       </VBox.margin>
-                                    </VBox>
-                                 </children>
-                              </VBox>
-                           </children>
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </AnchorPane>
-                     </content>
-                  </TitledPane>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" top="5.0" />
@@ -171,15 +143,15 @@
                      <children>
                         <HBox alignment="CENTER">
                            <children>
-                              <Button fx:id="btnRemover" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover" onAction="#remover" />
+                              <Button fx:id="btnRemover" mnemonicParsing="false" onAction="#remover" prefHeight="30.0" prefWidth="100.0" text="Remover" />
                               <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar" onAction="#cancelar">
+                                    <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="30.0" prefWidth="100.0" text="Cancelar">
                                        <HBox.margin>
                                           <Insets left="5.0" right="5.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="btnSalvar" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Salvar" onAction="#salvar" />
+                                    <Button fx:id="btnSalvar" layoutX="15.0" layoutY="10.0" mnemonicParsing="false" onAction="#salvar" prefHeight="30.0" prefWidth="100.0" text="Salvar" />
                                  </children>
                               </HBox>
                            </children>
