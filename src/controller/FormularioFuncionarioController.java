@@ -126,7 +126,7 @@ public class FormularioFuncionarioController implements Initializable {
         btnRemover.setDisable( !status );
 	}
 	
-	private void set_agencia(int idAgencia) {
+	private void set_agencia(long idAgencia) {
 		Task<Agencia> task_set_agencia = new Task<Agencia>() {
 
 			@Override
@@ -160,8 +160,8 @@ public class FormularioFuncionarioController implements Initializable {
         String emailFuncionario = txtEmailFuncionario.getText().trim();
         String credencialFuncionario = txtCredencialFuncionario.getText().trim();
         
-        int idAgencia = cbAgencia.getSelectionModel().getSelectedItem().getId();
-        int idNivelAcesso = cbNivelAcesso.getSelectionModel().getSelectedItem().getId();
+        Integer idAgencia = cbAgencia.getSelectionModel().getSelectedItem().getId();
+        Integer idNivelAcesso = cbNivelAcesso.getSelectionModel().getSelectedItem().getId();
 
         if( !senhaFuncionario.equals(confSenhaFuncionario) ) return;
 

@@ -23,7 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import model.ComboBoxUtils;
-import model.ConfirmDialog;
+import model.AlertDialog;
 import model.Context;
 import model.Login;
 import model.TableViewUtils;
@@ -319,7 +319,7 @@ public class FormularioNivelAcessoController implements Initializable {
 	}
 	
 	@FXML public void removerNivel(ActionEvent event) {
-		if( ConfirmDialog.show("Confirmar", "Remover Nível de Acesso", "Você tem certeza?") ) {
+		if( AlertDialog.show("Confirmar", "Remover Nível de Acesso", "Você tem certeza?") ) {
 			nivel_acesso = new NivelAcessoJuridico();
 			nivel_acesso.setId( id_nivel_acesso );
 			nivel_acesso.limpar_relacionamentos_a_telas();

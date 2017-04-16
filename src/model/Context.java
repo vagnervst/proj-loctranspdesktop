@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Context {
@@ -11,6 +12,21 @@ public class Context {
 				
 		removeData(key);
 		return int_data;
+	}
+	
+	public static Long getLongData(String key) {
+		Long long_data = ( data.get(key) instanceof Long )? (Long) data.get(key) : null;
+		
+		removeData(key);
+		return long_data;
+	}
+	
+	public static <T> List<T> getListData(String key) {
+		@SuppressWarnings("unchecked")
+		List<T> list_data = ( data.get(key) instanceof List )? (List<T>) data.get(key) : null;
+		
+		removeData(key);
+		return list_data;
 	}
 	
 	private static void removeData(String key) {

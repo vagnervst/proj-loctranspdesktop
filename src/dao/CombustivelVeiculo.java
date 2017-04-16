@@ -10,7 +10,7 @@ public class CombustivelVeiculo extends DatabaseUtils {
 	private int id;
 	private String nome;
 	
-	public List<CombustivelVeiculo> getCombustiveis(int id_tipo_veiculo) {
+	public List<CombustivelVeiculo> getCombustiveis(long id_tipo_veiculo) {
         String query = "SELECT tc.* ";
         query += "FROM tipoveiculo_tipocombustivel AS tvc ";
         query += "INNER JOIN tbl_tipoveiculo AS tv ";

@@ -7,7 +7,7 @@ import model.DatabaseUtils;
 
 public class Veiculo extends DatabaseUtils {
 	private String nome_tabela = "tbl_veiculo";
-	private int id, ano, qtdPortas, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;
+	private Integer id, ano, qtdPortas, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;
 	private String nome, tipoMotor, codigo;
 	
 	public List<Veiculo> getVeiculos(String where) {
@@ -37,55 +37,7 @@ public class Veiculo extends DatabaseUtils {
 	}
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
-	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getAno() {
-		return ano;
-	}
-	public void setAno(int ano) {
-		this.ano = ano;
-	}
-	public int getQtdPortas() {
-		return qtdPortas;
-	}
-	public void setQtdPortas(int qtdPortas) {
-		this.qtdPortas = qtdPortas;
-	}
-	public int getIdCategoriaVeiculo() {
-		return idCategoriaVeiculo;
-	}
-	public void setIdCategoriaVeiculo(int idCategoriaVeiculo) {
-		this.idCategoriaVeiculo = idCategoriaVeiculo;
-	}
-	public int getIdFabricante() {
-		return idFabricante;
-	}
-	public void setIdFabricante(int idFabricante) {
-		this.idFabricante = idFabricante;
-	}
-	public int getIdTipoCombustivel() {
-		return idTipoCombustivel;
-	}
-	public void setIdTipoCombustivel(int idTipoCombustivel) {
-		this.idTipoCombustivel = idTipoCombustivel;
-	}
-	public int getIdTipoVeiculo() {
-		return idTipoVeiculo;
-	}
-	public void setIdTipoVeiculo(int idTipoVeiculo) {
-		this.idTipoVeiculo = idTipoVeiculo;
-	}
-	public int getIdTransmissao() {
-		return idTransmissao;
-	}
-	public void setIdTransmissao(int idTransmissao) {
-		this.idTransmissao = idTransmissao;
-	}
+	}	
 	public String getNome() {
 		return nome;
 	}
@@ -103,8 +55,71 @@ public class Veiculo extends DatabaseUtils {
 	}
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}	
+	public int getId() {
+		return id;
 	}
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		this.ano = ano;
+	}
+
+	public int getQtdPortas() {
+		return qtdPortas;
+	}
+
+	public void setQtdPortas(int qtdPortas) {
+		this.qtdPortas = qtdPortas;
+	}
+
+	public int getIdCategoriaVeiculo() {
+		return idCategoriaVeiculo;
+	}
+
+	public void setIdCategoriaVeiculo(int idCategoriaVeiculo) {
+		this.idCategoriaVeiculo = idCategoriaVeiculo;
+	}
+
+	public int getIdFabricante() {
+		return idFabricante;
+	}
+
+	public void setIdFabricante(int idFabricante) {
+		this.idFabricante = idFabricante;
+	}
+
+	public int getIdTipoCombustivel() {
+		return idTipoCombustivel;
+	}
+
+	public void setIdTipoCombustivel(int idTipoCombustivel) {
+		this.idTipoCombustivel = idTipoCombustivel;
+	}
+
+	public int getIdTipoVeiculo() {
+		return idTipoVeiculo;
+	}
+
+	public void setIdTipoVeiculo(int idTipoVeiculo) {
+		this.idTipoVeiculo = idTipoVeiculo;
+	}
+
+	public int getIdTransmissao() {
+		return idTransmissao;
+	}
+
+	public void setIdTransmissao(int idTransmissao) {
+		this.idTransmissao = idTransmissao;
+	}
+
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

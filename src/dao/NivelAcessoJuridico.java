@@ -9,7 +9,7 @@ import model.DatabaseUtils;
 
 public class NivelAcessoJuridico extends DatabaseUtils {
 	private String nome_tabela = "tbl_nivelacesso_juridico";
-	private int id, idUsuario;
+	private Integer id, idUsuario;
 	private String titulo;
 	
 	public List<Map> getNiveisAcesso() {
@@ -42,7 +42,7 @@ public class NivelAcessoJuridico extends DatabaseUtils {
         return telas;
 	}
 	
-	public int relacionar_a_tela(int idTela, int idPermissao) {
+	public long relacionar_a_tela(int idTela, int idPermissao) {
 		NivelAcessoJuridicoTelaSoftare relacionamento = new NivelAcessoJuridicoTelaSoftare();
 		
 		relacionamento.setIdNivelAcessoJuridico( this.id );
@@ -59,10 +59,10 @@ public class NivelAcessoJuridico extends DatabaseUtils {
 		return this.executarQueryAlteracao( query );
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}	
 	public String getNome_tabela() {
@@ -71,10 +71,10 @@ public class NivelAcessoJuridico extends DatabaseUtils {
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
 	}
-	public int getIdUsuario() {
+	public Integer getIdUsuario() {
 		return idUsuario;
 	}
-	public void setIdUsuario(int idUsuario) {
+	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 	public String getTitulo() {

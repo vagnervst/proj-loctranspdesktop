@@ -4,9 +4,9 @@ import model.DatabaseUtils;
 
 public class NivelAcessoJuridicoTelaSoftare extends DatabaseUtils {
 	private String nome_tabela = "nivel_acesso_juridico_tela_software";
-	private int idNivelAcessoJuridico;
-	private int idPermissaoJuridico;
-	private int idTelaSoftware;
+	private long idNivelAcessoJuridico;
+	private long idPermissaoJuridico;
+	private long idTelaSoftware;
 	
 	public String getNome_tabela() {
 		return nome_tabela;
@@ -14,22 +14,22 @@ public class NivelAcessoJuridicoTelaSoftare extends DatabaseUtils {
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
 	}
-	public int getIdNivelAcessoJuridico() {
+	public long getIdNivelAcessoJuridico() {
 		return idNivelAcessoJuridico;
 	}
-	public void setIdNivelAcessoJuridico(int idNivelAcessoJuridico) {
+	public void setIdNivelAcessoJuridico(long idNivelAcessoJuridico) {
 		this.idNivelAcessoJuridico = idNivelAcessoJuridico;
 	}
-	public int getIdPermissaoJuridico() {
+	public long getIdPermissaoJuridico() {
 		return idPermissaoJuridico;
 	}
-	public void setIdPermissaoJuridico(int idPermissaoJuridico) {
+	public void setIdPermissaoJuridico(long idPermissaoJuridico) {
 		this.idPermissaoJuridico = idPermissaoJuridico;
 	}
-	public int getIdTelaSoftware() {
+	public long getIdTelaSoftware() {
 		return idTelaSoftware;
 	}
-	public void setIdTelaSoftware(int idTelaSoftware) {
+	public void setIdTelaSoftware(long idTelaSoftware) {
 		this.idTelaSoftware = idTelaSoftware;
 	}
 	

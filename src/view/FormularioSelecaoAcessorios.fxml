@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="controller.FormularioAcessoriosController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FormularioAcessoriosController">
    <children>
       <SplitPane dividerPositions="0.5903010033444817" layoutX="108.0" layoutY="166.0" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -27,7 +27,7 @@
                         <VBox>
                            <children>
                               <Label text="Titulo" />
-                              <TextField fx:id="txtTitulo" />
+                              <TextField fx:id="txtTitulo" disable="true" editable="false" />
                            </children>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0">
@@ -40,12 +40,12 @@
                         </VBox>
                         <HBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                            <children>
-                              <Button fx:id="btnCancelar" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar" onAction="#cancelar">
+                              <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" prefHeight="30.0" prefWidth="100.0" text="Cancelar">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnConcluido" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Concluido" onAction="#btnConcluido" />
+                              <Button fx:id="btnConcluido" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#btnConcluido" prefHeight="30.0" prefWidth="100.0" text="Concluido" />
                            </children>
                         </HBox>
                      </children>

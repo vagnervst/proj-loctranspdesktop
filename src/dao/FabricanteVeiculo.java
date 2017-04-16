@@ -10,7 +10,7 @@ public class FabricanteVeiculo extends DatabaseUtils {
 	private int id;
 	private String nome;
 	
-	public List<FabricanteVeiculo> getFabricantes(int idTipoVeiculo) {
+	public List<FabricanteVeiculo> getFabricantes(long idTipoVeiculo) {
         String query = "SELECT f.id, f.nome ";
         query += "FROM fabricanteveiculo_tipoveiculo AS ft ";
         query += "INNER JOIN tbl_fabricanteveiculo AS f ";

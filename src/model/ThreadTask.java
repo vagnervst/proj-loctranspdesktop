@@ -6,9 +6,11 @@ import javafx.concurrent.Task;
 
 public class ThreadTask<T> {
 
-	Callable<T> action;
-	CustomCallable<T> resultfunc;
-
+	private Callable<T> action;
+	private CustomCallable<T> resultfunc;
+	private Thread thread;
+	private ProgressStage progress;
+	
 	public ThreadTask( Callable<T> action, CustomCallable<T> call ) {
 		this.action = action;
 		this.resultfunc = call;
@@ -37,8 +39,47 @@ public class ThreadTask<T> {
 			}
 			
 		};
+					
+		thread = new Thread( task );
+		thread.start();		
+	}
+	
+	public void runWithProgress() {
+		Task task = new Task(){
+
+			@Override
+			protected Object call() throws Exception {
+				// TODO Auto-generated method stub
+				return action.call();
+			}
+			
+			@Override
+			protected void succeeded() {
+				// TODO Auto-generated method stub
+				super.succeeded();
+				try {
+					resultfunc.putParametro( this.get() );
+					resultfunc.call();					
+					progress.hide();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		};
+					
+		progress = new ProgressStage();
+		progress.show();
 		
-		Thread thread = new Thread( task );
+		thread = new Thread( task );
 		thread.start();
+	}
+	
+	public boolean isRunning() {
+		if( thread != null )
+			return thread.isAlive();
+		
+		return false;
 	}
 }

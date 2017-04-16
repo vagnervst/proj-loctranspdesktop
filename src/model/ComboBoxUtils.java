@@ -32,6 +32,7 @@ public class ComboBoxUtils {
 	
 	public static <T extends DatabaseUtils> void popular_combobox(ComboBox combo_box, List<T> t) {
 		combo_box.getItems().clear();
+		System.out.println( combo_box.getItems().size() );
 		combo_box.getItems().addAll( t );
 	}
 	

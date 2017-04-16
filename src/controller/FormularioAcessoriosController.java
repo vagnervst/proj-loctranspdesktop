@@ -24,13 +24,13 @@ import view.WindowManager;
 
 public class FormularioAcessoriosController implements Initializable {
 
-	@FXML TableView<List<Map>> tblAcessorios;
+	@FXML TableView<List<Map<String, Object>>> tblAcessorios;
 	@FXML TextField txtTitulo;
 	@FXML CheckBox chkIncluir;
 	@FXML Button btnCancelar;
 	@FXML Button btnConcluido;
 	
-	List<Map> acessorios_incluidos;
+	List<Integer> acessorios_incluidos;
 	
 	int idTipoVeiculo;
 	Map<String, Object> acessorio_selecionado;
@@ -38,7 +38,8 @@ public class FormularioAcessoriosController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub			
-		acessorios_incluidos = new ArrayList<Map>();
+		chkIncluir.setVisible(false);
+		acessorios_incluidos = new ArrayList<Integer>();
 		
 		idTipoVeiculo = Context.getIntData("idTipoVeiculo");
 		
@@ -47,6 +48,11 @@ public class FormularioAcessoriosController implements Initializable {
 		popular_tabela();
 		tblAcessorios.setOnMouseClicked( new AcaoCliqueTabela() );
 		chkIncluir.setOnAction( new AcaoCheckBoxInclusaoAcessorio() );
+		
+		List<Integer> acessorios_veiculo = Context.getListData("listaIdAcessorios");
+		if( acessorios_veiculo != null ) {
+			acessorios_incluidos = acessorios_veiculo;
+		}
 	}
 	
 	public void popular_tabela() {
@@ -69,7 +75,7 @@ public class FormularioAcessoriosController implements Initializable {
 
 	private boolean is_acessorio_incluido(int id) {
 		for( int i = 0; i < acessorios_incluidos.size(); ++i ) {
-			if( (int) acessorios_incluidos.get(i).get("id") == id ) return true;
+			if( acessorios_incluidos.get(i) == id ) return true;
 		}
 		
 		return false;
@@ -79,12 +85,18 @@ public class FormularioAcessoriosController implements Initializable {
 		List<Integer> lista_id = new ArrayList<>();
 		
 		for( int i = 0; i < acessorios_incluidos.size(); ++i ) {
-			int id_acessorio = (int) acessorios_incluidos.get(i).get("id");
+			int id_acessorio = acessorios_incluidos.get(i);
 			
 			lista_id.add( id_acessorio );
 		}
 		
 		return lista_id;
+	}
+	
+	private void remover_acessorio(int id_acessorio) {
+		for( int i = 0; i < acessorios_incluidos.size(); ++i ) {
+			if( acessorios_incluidos.get(i) == id_acessorio ) acessorios_incluidos.remove(i);
+		}
 	}
 	
 	private class AcaoCliqueTabela implements EventHandler<MouseEvent> {
@@ -98,6 +110,7 @@ public class FormularioAcessoriosController implements Initializable {
 			
 			int id_acessorio = (int) acessorio_selecionado.get("id");
 			
+			chkIncluir.setVisible(true);
 			if( is_acessorio_incluido( id_acessorio ) ) {
 				chkIncluir.setSelected( true );
 			} else {
@@ -116,12 +129,12 @@ public class FormularioAcessoriosController implements Initializable {
 			
 			int id_acessorio_selecionado = (int) acessorio_selecionado.get("id");
 			if( !is_acessorio_incluido( id_acessorio_selecionado ) ) {
-				acessorios_incluidos.add( acessorio_selecionado );				
+				acessorios_incluidos.add( id_acessorio_selecionado );				
 			} else {
-				acessorios_incluidos.remove( acessorio_selecionado );				
+				remover_acessorio( id_acessorio_selecionado );				
 			}
 			
-			acessorio_selecionado = null;
+			System.out.println("Qtd acessorios apos alteracao: " + acessorios_incluidos.size());			
 		}		
 	}
 

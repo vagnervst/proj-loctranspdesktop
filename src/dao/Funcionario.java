@@ -9,14 +9,15 @@ import model.DatabaseUtils;
 
 public class Funcionario extends DatabaseUtils {
 	private String nome_tabela = "tbl_funcionario";
-	private int id, idNivelAcesso, idAgencia, idEmpresa, statusOnline;
+	private Integer id, idNivelAcesso, idAgencia, idEmpresa;
+	int statusOnline;
 	private String nome, credencial, senha, telefone, celular, email;
 
 	public Funcionario() {
 
 	}
 
-	public Funcionario(String nome, String senha, String credencial, String telefone, String celular, String email, int idNivelAcesso, int idAgencia, int idEmpresa) {
+	public Funcionario(String nome, String senha, String credencial, String telefone, String celular, String email, Integer idNivelAcesso, Integer idAgencia, Integer idEmpresa) {
 		this.nome = nome;
         this.senha = senha;
         this.credencial = credencial;
@@ -61,22 +62,22 @@ public class Funcionario extends DatabaseUtils {
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
-	public int getIdNivelAcesso() {
+	public Integer getIdNivelAcesso() {
 		return idNivelAcesso;
 	}
-	public void setIdNivelAcesso(int idNivelAcesso) {
+	public void setIdNivelAcesso(Integer idNivelAcesso) {
 		this.idNivelAcesso = idNivelAcesso;
 	}
-	public int getIdAgencia() {
+	public Integer getIdAgencia() {
 		return idAgencia;
 	}
-	public void setIdAgencia(int idAgencia) {
+	public void setIdAgencia(Integer idAgencia) {
 		this.idAgencia = idAgencia;
 	}
 	public String getNome() {
@@ -126,11 +127,11 @@ public class Funcionario extends DatabaseUtils {
 		this.credencial = credencial;
 	}
 
-	public int getIdEmpresa() {
+	public Integer getIdEmpresa() {
 		return idEmpresa;
 	}
 
-	public void setIdEmpresa(int idEmpresa) {
+	public void setIdEmpresa(Integer idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
 

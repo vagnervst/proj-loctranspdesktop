@@ -12,6 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -112,16 +113,6 @@
                                                    <children>
                                                       <VBox>
                                                          <children>
-                                                            <Label text="Categoria">
-                                                               <font>
-                                                                  <Font size="14.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <ComboBox fx:id="cbCategoria" prefHeight="25.0" prefWidth="501.0" />
-                                                         </children>
-                                                      </VBox>
-                                                      <VBox>
-                                                         <children>
                                                             <Label text="Veículo">
                                                                <font>
                                                                   <Font size="14.0" />
@@ -130,28 +121,7 @@
                                                             <ComboBox fx:id="cbVeiculo" prefHeight="30.0" prefWidth="464.0" />
                                                          </children>
                                                       </VBox>
-                                                   </children>
-                                                   <HBox.margin>
-                                                      <Insets right="10.0" />
-                                                   </HBox.margin>
-                                                </VBox>
-                                                <VBox prefHeight="100.0">
-                                                   <children>
                                                       <VBox>
-                                                         <children>
-                                                            <Label text="Fabricante">
-                                                               <font>
-                                                                  <Font size="14.0" />
-                                                               </font>
-                                                            </Label>
-                                                            <ComboBox fx:id="cbFabricante" prefHeight="25.0" prefWidth="255.0">
-                                                               <VBox.margin>
-                                                                  <Insets right="5.0" />
-                                                               </VBox.margin>
-                                                            </ComboBox>
-                                                         </children>
-                                                      </VBox>
-                                                      <VBox layoutX="10.0" layoutY="10.0">
                                                          <children>
                                                             <Label text="Preço Médio">
                                                                <font>
@@ -166,11 +136,32 @@
                                                       <Insets right="10.0" />
                                                    </HBox.margin>
                                                 </VBox>
+                                                <VBox>
+                                                   <children>
+                                                      <VBox>
+                                                         <children>
+                                                            <Label text="Fabricante">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                            </Label>
+                                                            <ComboBox fx:id="cbFabricante" prefHeight="30.0" prefWidth="255.0">
+                                                               <VBox.margin>
+                                                                  <Insets right="5.0" />
+                                                               </VBox.margin>
+                                                            </ComboBox>
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </VBox>
                                                 <TitledPane animated="false" collapsible="false" prefHeight="95.0" prefWidth="140.0" text="Acessórios (opcional)">
                                                   <content>
                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="342.0">
                                                          <children>
-                                                            <Button fx:id="btnAcessorios" layoutX="19.0" layoutY="16.0" mnemonicParsing="false" onAction="#abrirSelecaoAcessorios" prefHeight="30.0" prefWidth="100.0" text="Selecionar..." AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                            <Button fx:id="btnAcessorios" layoutX="19.0" layoutY="16.0" mnemonicParsing="false" onAction="#abrirSelecaoAcessorios" prefHeight="30.0" prefWidth="100.0" text="Selecionar..." AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                          </children>
                                                       </AnchorPane>
                                                   </content>
@@ -224,7 +215,7 @@
                                                                                     <Font size="14.0" />
                                                                                  </font>
                                                                               </Label>
-                                                                              <TextField fx:id="txtQuilometragemExcedida" prefWidth="50.0" />
+                                                                              <TextField fx:id="txtQuilometragemExcedida" prefWidth="50.0" />                                                                              
                                                                            </children>
                                                                         </VBox>
                                                                      </children>
@@ -290,7 +281,7 @@
                                                             <Font size="14.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextArea fx:id="txtDescricao" prefHeight="120.0" prefWidth="400.0">
+                                                      <TextArea fx:id="txtDescricao" prefHeight="120.0" prefWidth="400.0" wrapText="true">
                                                          <VBox.margin>
                                                             <Insets right="10.0" />
                                                          </VBox.margin>
@@ -350,15 +341,15 @@
                                           </HBox>
                                           <HBox>
                                              <children>
-                                                <Button fx:id="btnRemover" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Remover" />
+                                                <Button fx:id="btnRemover" mnemonicParsing="false" onAction="#removerPublicacao" prefHeight="30.0" prefWidth="100.0" text="Remover" />
                                                 <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <Button fx:id="btnCancelar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Cancelar">
+                                                      <Button fx:id="btnCancelar" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancelar" prefHeight="30.0" prefWidth="100.0" text="Cancelar">
                                                          <HBox.margin>
                                                             <Insets right="10.0" />
                                                          </HBox.margin>
                                                       </Button>
-                                                      <Button fx:id="btnSalvar" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Salvar">
+                                                      <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#salvarPublicacao" prefHeight="30.0" prefWidth="100.0" text="Salvar">
                                                          <HBox.margin>
                                                             <Insets />
                                                          </HBox.margin>
@@ -388,8 +379,12 @@
                            <children>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
+                                    <ImageView fx:id="ivImagemPrincipal" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                                    	<image>
+                                    		<Image url="images/car_cityshare.png" />
+                                    	</image>
+                                    </ImageView>                                    	                                   
+                                    <Button fx:id="btnImagemPrincipal" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -398,8 +393,12 @@
                               </VBox>
                               <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0">
                                  <children>
-                                    <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
+                                    <ImageView fx:id="ivImagemA" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                                    	<image>
+                                    		<Image url="images/car_cityshare.png" />
+                                    	</image>
+                                    </ImageView>
+                                    <Button fx:id="btnImagemA" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -408,8 +407,12 @@
                               </VBox>
                               <VBox alignment="CENTER" layoutX="140.0" layoutY="10.0">
                                  <children>
-                                    <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
+                                    <ImageView fx:id="ivImagemB" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                                    	<image>
+                                    		<Image url="images/car_cityshare.png" />
+                                    	</image>
+                                    </ImageView>
+                                    <Button fx:id="btnImagemB" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -418,8 +421,12 @@
                               </VBox>
                               <VBox alignment="CENTER" layoutX="270.0" layoutY="10.0">
                                  <children>
-                                    <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
+                                    <ImageView fx:id="ivImagemC" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                                    	<image>
+                                    		<Image url="images/car_cityshare.png" />
+                                    	</image>
+                                    </ImageView>
+                                    <Button fx:id="btnImagemC" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -428,8 +435,12 @@
                               </VBox>
                               <VBox alignment="CENTER" layoutX="400.0" layoutY="10.0">
                                  <children>
-                                    <ImageView fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
+                                    <ImageView fx:id="ivImagemD" fitHeight="130.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                                    	<image>
+                                    		<Image url="images/car_cityshare.png" />
+                                    	</image>
+                                    </ImageView>
+                                    <Button fx:id="btnImagemD" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Alterar">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
