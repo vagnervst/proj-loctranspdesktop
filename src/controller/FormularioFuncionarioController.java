@@ -40,17 +40,18 @@ public class FormularioFuncionarioController implements Initializable {
 	
 	Funcionario funcionario_selecionado = null;
 
-	int idEmpresa;		
+	Integer idEmpresa;		
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		set_status_formulario(false);
+		
 		Login.get_id_empresa(new CustomCallable<Integer>() {
 			@Override
 			public Integer call() throws Exception {
 				// TODO Auto-generated method stub						
-				idEmpresa = (int) this.getParametro();										
+				idEmpresa = (Integer) this.getParametro();										
 				
 				ThreadTask<Empresa> info_empresa = new ThreadTask<Empresa>(new Callable<Empresa>() {
 

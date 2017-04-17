@@ -41,7 +41,7 @@ public class FormularioAgenciaController implements Initializable {
 	@FXML
 	Button btnRemover;
 
-	int idEmpresa;
+	Integer idEmpresa;
 	Agencia agencia_selecionada = null;
 
 	@Override
@@ -54,14 +54,14 @@ public class FormularioAgenciaController implements Initializable {
 			public List<Map> call() throws Exception {
 				// TODO Auto-generated method stub
 				set_status_formulario(true);
-				idEmpresa = (int) this.getParametro();
+				idEmpresa = (Integer) this.getParametro();
 
 				ComboBoxUtils.popular_combobox(cbEstado, new Estado());
 				ComboBoxUtils.popular_combobox(cbCidade, new Cidade());
 
-				int id_agencia = Context.getIntData("idAgencia");
+				Integer id_agencia = Context.getIntData("idAgencia");
 
-				if( id_agencia != -1 ) {
+				if( id_agencia != null && id_agencia != -1 ) {
 					agencia_selecionada = new Agencia().buscar("id = ?", Arrays.asList( id_agencia ), Agencia.class).get(0);
 
 					txtTituloAgencia.setText( agencia_selecionada.getTitulo() );
@@ -90,7 +90,7 @@ public class FormularioAgenciaController implements Initializable {
 		txtEndereco.setDisable(!status);
 	}
 
-	private void set_estado(int id_estado) {
+	private void set_estado(Integer id_estado) {
 		Task<Estado> task_estado_agencia = new Task<Estado>() {
 
 			@Override
@@ -112,7 +112,7 @@ public class FormularioAgenciaController implements Initializable {
 		thread_estado_agencia.start();
 	}
 
-	private void set_cidade(int id_cidade) {
+	private void set_cidade(Integer id_cidade) {
 		Task<Cidade> task_cidade_agencia = new Task<Cidade>() {
 
 			@Override
@@ -141,7 +141,7 @@ public class FormularioAgenciaController implements Initializable {
 		String email_agencia = txtEmail.getText().trim();
 		String endereco_agencia = txtEndereco.getText().trim();
 
-		int idCidade = cbCidade.getSelectionModel().getSelectedItem().getId();
+		Integer idCidade = cbCidade.getSelectionModel().getSelectedItem().getId();
 		System.out.println( "id usuairo: " + idEmpresa );
 		Agencia agencia = new Agencia( titulo_agencia, telefone_agencia, email_agencia, endereco_agencia, idCidade, idEmpresa );
 

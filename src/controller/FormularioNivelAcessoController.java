@@ -16,14 +16,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import model.ComboBoxUtils;
 import model.AlertDialog;
+import model.ComboBoxUtils;
 import model.Context;
 import model.Login;
 import model.TableViewUtils;
@@ -46,13 +47,13 @@ public class FormularioNivelAcessoController implements Initializable {
 	List<Map> valores_coluna;
 	List<Map> permissoes;
 	
-	private static int LEITURA = 1, ESCRITA = 2, EDICAO = 3, REMOCAO = 4;
+	private static Integer LEITURA = 1, ESCRITA = 2, EDICAO = 3, REMOCAO = 4;
 	
 	@FXML TableView tblTelasPermitidas;
 	@FXML TextField txtTituloNivelAcesso;
 	
 	NivelAcessoJuridico nivel_acesso;
-	int id_nivel_acesso = -1;
+	Integer id_nivel_acesso = -1;
 	@FXML Button btnRemoverNivel;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -281,7 +282,7 @@ public class FormularioNivelAcessoController implements Initializable {
 			nivel_acesso.atualizar();
 			nivel_acesso.limpar_relacionamentos_a_telas();
 		} else {
-			int id_nivel_acesso_inserido = nivel_acesso.inserirGetKey();
+			Integer id_nivel_acesso_inserido = nivel_acesso.inserirGetKey();
 			nivel_acesso.setId( id_nivel_acesso_inserido );
 		}
 		
@@ -319,7 +320,7 @@ public class FormularioNivelAcessoController implements Initializable {
 	}
 	
 	@FXML public void removerNivel(ActionEvent event) {
-		if( AlertDialog.show("Confirmar", "Remover Nível de Acesso", "Você tem certeza?") ) {
+		if( AlertDialog.show("Confirmar", "Remover NÃ­vel de Acesso", "VocÃª tem certeza?", AlertType.CONFIRMATION) ) {
 			nivel_acesso = new NivelAcessoJuridico();
 			nivel_acesso.setId( id_nivel_acesso );
 			nivel_acesso.limpar_relacionamentos_a_telas();

@@ -64,7 +64,6 @@ public class FormValidator {
 				inteiras = c.getControlNewText().indexOf(",");
 				decimais = c.getControlNewText().length() - inteiras - 1;
 			}
-			System.out.println( inteiras + " " + decimais );
 			
 			if( doublePattern.matcher( c.getControlNewText() ).matches() && inteiras <= casas_inteiras && decimais <= casas_decimais ) {
 				return c;

@@ -40,19 +40,19 @@ public class PublicacoesController implements Initializable {
 		colunas.put("cod", "id");
 		colunas.put("titulo", "titulo");
 		colunas.put("Tipo", "tipoVeiculo");
-		colunas.put("Valor da diária", "valorDiaria");
-		colunas.put("Valor do Combustível", "valorCombustivel");
-		colunas.put("Locações", "locacoes");
+		colunas.put("Valor da diï¿½ria", "valorDiaria");
+		colunas.put("Valor do Combustï¿½vel", "valorCombustivel");
+		colunas.put("Locaï¿½ï¿½es", "locacoes");
 		colunas.put("Status", "statusPublicacao");
 		
 		if( Login.get_tipo_conta() == Login.JURIDICO ) {
 						
-			Login.get_id_empresa(new CustomCallable<Long>() {
+			Login.get_id_empresa(new CustomCallable<Integer>() {
 				
 				@Override
-				public Long call() throws Exception {
+				public Integer call() throws Exception {
 					// TODO Auto-generated method stub
-					long id_empresa = (long) this.getParametro();
+					Integer id_empresa = (Integer) this.getParametro();
 					
 					TableViewUtils.preparar_tabela(tblPublicacoes, colunas, new Callable<List<Map>>() {
 						

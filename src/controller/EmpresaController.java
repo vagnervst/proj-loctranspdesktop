@@ -28,4 +28,8 @@ public class EmpresaController implements Initializable {
 		WindowManager.abrirModal("/view/NiveisAcesso.fxml", getClass());
 	}
 
+	@FXML public void abrirEstatisticas(ActionEvent event) {
+		WindowManager.abrirModal("/view/RelatorioVeiculos.fxml", getClass());
+	}
+
 }

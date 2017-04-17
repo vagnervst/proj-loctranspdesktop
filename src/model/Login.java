@@ -65,13 +65,13 @@ public class Login {
 	}
 
 	public static void get_id_empresa(CustomCallable callable) {
-		ThreadTask<Long> task = null;
+		ThreadTask<Integer> task = null;
 		if( tipo_conta == JURIDICO ) {
 			
-            task = new ThreadTask<Long>(new Callable<Long>() {
+            task = new ThreadTask<Integer>(new Callable<Integer>() {
 
 				@Override
-				public Long call() throws Exception {
+				public Integer call() throws Exception {
 					// TODO Auto-generated method stub
 					String query = "SELECT e.id AS idEmpresa ";
 		            query += "FROM tbl_empresa AS e ";
@@ -81,24 +81,24 @@ public class Login {
 		            
 					DatabaseUtils db = new DatabaseUtils();
 					
-					return Long.valueOf( String.valueOf( db.get_list_from_result_set(db.executarQuery(query), Arrays.asList("idEmpresa")).get(0).get("idEmpresa") ) );
+					return new Integer( (Integer) db.get_list_from_result_set(db.executarQuery(query), Arrays.asList("idEmpresa")).get(0).get("idEmpresa") );
 				}
 
             }, callable);
 
 		} else {
 
-			task = new ThreadTask<Long>(new Callable<Long>() {
+			task = new ThreadTask<Integer>(new Callable<Integer>() {
 
 				@Override
-				public Long call() throws Exception {
+				public Integer call() throws Exception {
 					// TODO Auto-generated method stub
                     String query = "SELECT f.idEmpresa ";
                     query += "FROM tbl_funcionario AS f ";                    
                     query += "WHERE f.id = " + id_usuario;
 
 					DatabaseUtils db = new DatabaseUtils();
-					return Long.valueOf( String.valueOf( db.get_list_from_result_set(db.executarQuery(query), Arrays.asList("idEmpresa")).get(0).get("idEmpresa") ) );
+					return new Integer( (Integer) db.get_list_from_result_set(db.executarQuery(query), Arrays.asList("idEmpresa")).get(0).get("idEmpresa") );
 				}
 
             }, callable);					

@@ -205,8 +205,8 @@ public class DatabaseUtils {
 		return resultado;
 	}
 
-	protected int key_from_statement(PreparedStatement statement) {
-		int resultado = -1;
+	protected Integer key_from_statement(PreparedStatement statement) {
+		Integer resultado = -1;
 
 		try {
 			statement.executeUpdate();
@@ -228,11 +228,11 @@ public class DatabaseUtils {
 		return resultado;
 	}
 
-	protected int executarQueryGetKey(String query, List<Object> valores) {
+	protected Integer executarQueryGetKey(String query, List<Object> valores) {
 		PreparedStatement statement = this.preparar_statement_keys(query, valores);
 
 		System.out.println( statement );
-		int resultado = key_from_statement(statement);
+		Integer resultado = key_from_statement(statement);
 		return resultado;
 	}
 
@@ -512,7 +512,7 @@ public class DatabaseUtils {
 		return this.executarQueryGetKey(query, valores);
 	}
 
-	public int inserirGetKey() {
+	public Integer inserirGetKey() {
 		Map<String, Object> campos_chave_valor = this.get_campos_preenchidos();
 
 		String query = "INSERT INTO " + this.get_nome_tabela() + " ";
@@ -567,7 +567,7 @@ public class DatabaseUtils {
 				query += entry.getKey() + " = ?";
 				valores.add(entry.getValue());
 
-				if (contador < campo_valor.size() - 1) {
+				if (contador < campo_valor.size()) {
 					query += ", ";
 				}
 			}

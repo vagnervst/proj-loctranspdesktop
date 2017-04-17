@@ -26,7 +26,7 @@ public class Funcionario extends DatabaseUtils {
         this.email = email;
         this.idNivelAcesso = idNivelAcesso;
         this.idAgencia = idAgencia;
-        this.setIdEmpresa(idEmpresa);
+        this.idEmpresa = idEmpresa;
 	}
 
 	public List<Map> getFuncionarios() {

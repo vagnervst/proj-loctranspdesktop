@@ -1,13 +1,16 @@
 package dao;
 
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import model.DatabaseUtils;
 
 public class Veiculo extends DatabaseUtils {
 	private String nome_tabela = "tbl_veiculo";
-	private Integer id, ano, qtdPortas, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;
+	private Integer id, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;
+	private Integer ano, qtdPortas;
 	private String nome, tipoMotor, codigo;
 	
 	public List<Veiculo> getVeiculos(String where) {
@@ -30,6 +33,27 @@ public class Veiculo extends DatabaseUtils {
         
         ResultSet resultados = this.executarQuery(query);
         return this.get_list_from_result_set(resultados, Veiculo.class);
+	}
+	
+	public List<Map> relatorio_mais_publicados( String where ) {
+		String query = "SELECT v.nome, COUNT(p.idVeiculo) AS qtd ";
+		query += "FROM tbl_publicacao AS p ";
+		query += "INNER JOIN tbl_veiculo AS v ";
+		query += "ON v.id = p.idVeiculo ";
+		query += "INNER JOIN tbl_agencia AS a ";
+		query += "ON a.id = p.idAgencia ";
+		query += "INNER JOIN tbl_empresa AS e ";
+		query += "ON e.id = a.idEmpresa ";
+        
+		if( where != null ) {
+			query += "WHERE " + where;
+		}
+		
+		query += " GROUP BY p.idVeiculo";
+		
+		ResultSet resultado = this.executarQuery(query);
+		List<Map> lista_veiculos = this.get_list_from_result_set(resultado, Arrays.asList( "nome", "qtd" ));
+		return lista_veiculos;
 	}
 	
 	public String getNome_tabela() {
@@ -56,11 +80,11 @@ public class Veiculo extends DatabaseUtils {
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -80,43 +104,43 @@ public class Veiculo extends DatabaseUtils {
 		this.qtdPortas = qtdPortas;
 	}
 
-	public int getIdCategoriaVeiculo() {
+	public Integer getIdCategoriaVeiculo() {
 		return idCategoriaVeiculo;
 	}
 
-	public void setIdCategoriaVeiculo(int idCategoriaVeiculo) {
+	public void setIdCategoriaVeiculo(Integer idCategoriaVeiculo) {
 		this.idCategoriaVeiculo = idCategoriaVeiculo;
 	}
 
-	public int getIdFabricante() {
+	public Integer getIdFabricante() {
 		return idFabricante;
 	}
 
-	public void setIdFabricante(int idFabricante) {
+	public void setIdFabricante(Integer idFabricante) {
 		this.idFabricante = idFabricante;
 	}
 
-	public int getIdTipoCombustivel() {
+	public Integer getIdTipoCombustivel() {
 		return idTipoCombustivel;
 	}
 
-	public void setIdTipoCombustivel(int idTipoCombustivel) {
+	public void setIdTipoCombustivel(Integer idTipoCombustivel) {
 		this.idTipoCombustivel = idTipoCombustivel;
 	}
 
-	public int getIdTipoVeiculo() {
+	public Integer getIdTipoVeiculo() {
 		return idTipoVeiculo;
 	}
 
-	public void setIdTipoVeiculo(int idTipoVeiculo) {
+	public void setIdTipoVeiculo(Integer idTipoVeiculo) {
 		this.idTipoVeiculo = idTipoVeiculo;
 	}
 
-	public int getIdTransmissao() {
+	public Integer getIdTransmissao() {
 		return idTransmissao;
 	}
 
-	public void setIdTransmissao(int idTransmissao) {
+	public void setIdTransmissao(Integer idTransmissao) {
 		this.idTransmissao = idTransmissao;
 	}
 
