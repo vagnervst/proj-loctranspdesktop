@@ -10,14 +10,14 @@ import model.DatabaseUtils;
 public class Agencia extends DatabaseUtils {
 	private final String nome_tabela = "tbl_agencia";
 	
-	private int id, idCidade, idEmpresa;
+	private Integer id, idCidade, idEmpresa;
 	private String titulo, telefone, email, endereco;
 	
 	public Agencia() {
 		
 	}
 	
-	public Agencia(String titulo, String telefone, String email, String endereco, int idCidade, int idEmpresa) {
+	public Agencia(String titulo, String telefone, String email, String endereco, Integer idCidade, Integer idEmpresa) {
 		this.titulo = titulo;
 		this.telefone = telefone;
 		this.email = email;
@@ -42,19 +42,19 @@ public class Agencia extends DatabaseUtils {
 		return agencias;
 	}
 	
-	public int getIdCidade() {
+	public Integer getIdCidade() {
 		return idCidade;
 	}
 	
-	public void setIdCidade(int idCidade) {
+	public void setIdCidade(Integer idCidade) {
 		this.idCidade = idCidade;
 	}
 	
-	public int getIdEmpresa() {
+	public Integer getIdEmpresa() {
 		return idEmpresa;
 	}
 	
-	public void setIdEmpresa(int idEmpresa) {
+	public void setIdEmpresa(Integer idEmpresa) {
 		this.idEmpresa = idEmpresa;
 	}
 	
@@ -90,11 +90,11 @@ public class Agencia extends DatabaseUtils {
 		this.endereco = endereco;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	@Override

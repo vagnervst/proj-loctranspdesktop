@@ -7,7 +7,7 @@ import model.DatabaseUtils;
 public class Usuario extends DatabaseUtils {
 	private String nome_tabela = "tbl_usuario";
 	
-	private int id;
+	private Integer id;
 	private String nome, sobrenome, telefone, celular, email, senha, fotoPerfil;
 	private BigDecimal saldo;
 	public String getNome_tabela() {
@@ -16,10 +16,10 @@ public class Usuario extends DatabaseUtils {
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getNome() {

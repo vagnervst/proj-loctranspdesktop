@@ -1,20 +1,24 @@
 package dao;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import model.DatabaseUtils;
+import model.Server;
 
 public class Publicacao extends DatabaseUtils {
 	private String nome_tabela = "tbl_publicacao";
 	
 	private String titulo, descricao, imagemPrincipal, imagemA, imagemB, imagemC, imagemD;
-	private Integer id, idStatusPublicacao, idAgencia, idUsuario, idFuncionario, idVeiculo, quilometragemAtual, limiteQuilometragem;
+	private Integer id, idStatusPublicacao, idAgencia, idUsuario, idFuncionario, idVeiculo;
+	private Integer quilometragemAtual, limiteQuilometragem;
 	private Boolean disponivelOnline;
 	private BigDecimal valorDiaria, valorCombustivel, valorQuilometragem, precoMedio;
 	private Timestamp dataPublicacao;
@@ -46,7 +50,7 @@ public class Publicacao extends DatabaseUtils {
 		return this.executarQueryAlteracao(query);
 	}
 	
-	public boolean relacionar_a_acessorio(int idAcessorio) {
+	public boolean relacionar_a_acessorio(Integer idAcessorio) {
 		String query = "INSERT INTO publicacao_acessorioveiculo(idPublicacao, idAcessorio) ";
 		query += "VALUES(" + this.id + ", " + idAcessorio + ")";
 				
@@ -63,12 +67,39 @@ public class Publicacao extends DatabaseUtils {
 		List<Map> acessorios_encontrados = this.get_list_from_result_set( this.executarQuery(query), Arrays.asList( "idPublicacao", "idAcessorio" ));
 		
 		for( int i = 0; i < acessorios_encontrados.size(); ++i ) {
-			int id_acessorio = (int) acessorios_encontrados.get(i).get("idAcessorio");
+			Integer id_acessorio = (Integer) acessorios_encontrados.get(i).get("idAcessorio");
 			
 			acessorios.add( id_acessorio );
 		}
 		
 		return acessorios;
+	}
+	
+	private File download_imagem(String url) {			
+		File imagem = new File(url);
+						
+		return imagem;
+	}
+	
+	public Map<String, File> get_imagens() {
+		
+		String path = Server.address + "img/uploads/publicacoes/";
+		Map<String, File> lista_imagens = new HashMap<String, File>();
+		
+		File imagem_principal = download_imagem( path + this.imagemPrincipal );
+		
+		File imagem_a = download_imagem( path + this.imagemA  );
+		File imagem_b = download_imagem( path + this.imagemB  );
+		File imagem_c = download_imagem( path + this.imagemC  );
+		File imagem_d = download_imagem( path + this.imagemD  );
+		
+		lista_imagens.put("imagemPrincipal", imagem_principal);
+        lista_imagens.put("imagemA", imagem_a);
+        lista_imagens.put("imagemB", imagem_b);
+        lista_imagens.put("imagemC", imagem_c);
+        lista_imagens.put("imagemD", imagem_d);
+		
+		return lista_imagens;
 	}
 	
 	public String getNome_tabela() {

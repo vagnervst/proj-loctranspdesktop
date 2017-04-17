@@ -5,9 +5,9 @@ import model.DatabaseUtils;
 public class Cidade extends DatabaseUtils {
 	private String nome_tabela = "tbl_cidade";
 
-	private int id;
+	private Integer id;
 	private String nome;
-	private int idEstado;
+	private Integer idEstado;
 	
 	@Override
 	public String toString() {
@@ -22,11 +22,11 @@ public class Cidade extends DatabaseUtils {
 		this.nome = nome;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public int getIdEstado() {
+	public Integer getIdEstado() {
 		return idEstado;
 	}
 }

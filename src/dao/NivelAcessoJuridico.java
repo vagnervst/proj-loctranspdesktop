@@ -42,7 +42,7 @@ public class NivelAcessoJuridico extends DatabaseUtils {
         return telas;
 	}
 	
-	public long relacionar_a_tela(int idTela, int idPermissao) {
+	public long relacionar_a_tela(Integer idTela, Integer idPermissao) {
 		NivelAcessoJuridicoTelaSoftare relacionamento = new NivelAcessoJuridicoTelaSoftare();
 		
 		relacionamento.setIdNivelAcessoJuridico( this.id );

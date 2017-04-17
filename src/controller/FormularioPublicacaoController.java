@@ -17,11 +17,7 @@ import java.util.concurrent.Callable;
 
 import javax.imageio.ImageIO;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.commons.io.FilenameUtils;
 
 import dao.Agencia;
 import dao.CombustivelVeiculo;
@@ -53,6 +49,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import model.AlertDialog;
+import model.Arquivo;
 import model.ComboBoxUtils;
 import model.Context;
 import model.CustomCallable;
@@ -103,13 +100,13 @@ public class FormularioPublicacaoController implements Initializable {
 	
 	List<Integer> lista_acessorios = null;
 	
-	long id_tipo_selecionado = NAO_DEFINIDO;
-	long id_fabricante = NAO_DEFINIDO;
-	long id_tipo_combustivel = NAO_DEFINIDO;
-	long id_transmissao = NAO_DEFINIDO;
-	long numero_portas = NAO_DEFINIDO;	
+	Integer id_tipo_selecionado = NAO_DEFINIDO;
+	Integer id_fabricante = NAO_DEFINIDO;
+	Integer id_tipo_combustivel = NAO_DEFINIDO;
+	Integer id_transmissao = NAO_DEFINIDO;
+	Integer numero_portas = NAO_DEFINIDO;	
 	
-	Map<String, Image> imagens_publicacao;
+	Map<String, File> imagens_publicacao;
 	Publicacao publicacao_alvo = null;
 	
 	@Override
@@ -130,7 +127,7 @@ public class FormularioPublicacaoController implements Initializable {
 				@Override
 				public Object call() throws Exception {
 					// TODO Auto-generated method stub
-					long id_empresa = (long) this.getParametro();
+					Integer id_empresa = (Integer) this.getParametro();
 					
 					ComboBoxUtils.popular_combobox(cbAgencia, "idEmpresa = ?", Arrays.asList( id_empresa ), new Agencia());
 					return super.call();
@@ -179,7 +176,7 @@ public class FormularioPublicacaoController implements Initializable {
 		
 		Long id_publicacao_selecionada = Context.getLongData("idPublicacao");
 		if( id_publicacao_selecionada != null ) {			
-			publicacao_alvo = new Publicacao().buscar("id = ?", Arrays.asList( id_publicacao_selecionada ), Publicacao.class).get(0);
+			publicacao_alvo = new Publicacao().buscar("id = ?", Arrays.asList( id_publicacao_selecionada ), Publicacao.class).get(0);			
 			
 			preencher_campos(publicacao_alvo);
 			btnRemover.setVisible(true);
@@ -210,11 +207,44 @@ public class FormularioPublicacaoController implements Initializable {
 		});
 		
 		task_acessorios.run();
+	}		
+	
+	private void preencher_imagens() {
+		
+		ThreadTask<Map<String, File>> task_imagens = new ThreadTask<Map<String, File>>(new Callable<Map<String, File>>() {
+
+			@Override
+			public Map<String, File> call() throws Exception {
+				// TODO Auto-generated method stub
+				return publicacao_alvo.get_imagens();
+			}
+			
+		}, new CustomCallable<Map<String, File>>() {
+			
+			@Override
+			public Map<String, File> call() throws Exception {
+				// TODO Auto-generated method stub
+				Map<String, File> imagens_publicacao_selecionada = (Map<String, File>) this.getParametro();
+				System.out.println( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemPrincipal") ) );
+				
+				ivImagemPrincipal.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemPrincipal") ) ) );
+				ivImagemA.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemA") ) ) );
+				ivImagemB.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemB") ) ) );
+				ivImagemC.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemC") ) ) );
+				ivImagemD.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemD") ) ) );								
+
+				return super.call();
+			}
+			
+		});
+		
+		task_imagens.run();		
 	}
 	
 	private void preencher_campos(Publicacao publicacao_referencia) {
 		
 		preencher_acessorios(publicacao_referencia);
+		preencher_imagens();
 		txtTitulo.setText( publicacao_alvo.getTitulo() );
 		txtDescricao.setText( publicacao_alvo.getDescricao() );
 		txtPrecoMedio.setText( FormValidator.double_to_string( publicacao_alvo.getPrecoMedio() ) );
@@ -223,7 +253,7 @@ public class FormularioPublicacaoController implements Initializable {
 		txtLimiteQuilometragem.setText( publicacao_alvo.getLimiteQuilometragem().toString() );
 		txtValorDiaria.setText( FormValidator.double_to_string( publicacao_alvo.getValorDiaria() ) ); 
 		txtValorCombustivel.setText( FormValidator.double_to_string( publicacao_alvo.getValorCombustivel() ) );
-		
+				
 		ThreadTask<Veiculo> taskVeiculo = new ThreadTask<Veiculo>( new Callable<Veiculo>() {
 			
 			@Override
@@ -354,8 +384,7 @@ public class FormularioPublicacaoController implements Initializable {
 	}
 	
 	public Void realizar_relacionamentos(Publicacao publicacao_alvo, List<Integer> acessorios) {
-		if( acessorios == null ) return null;
-		System.out.println("Realcionando!");
+		if( acessorios == null ) return null;		
 		
 		for( int i = 0; i < acessorios.size(); ++i ) {
 			publicacao_alvo.relacionar_a_acessorio( acessorios.get(i) );
@@ -364,13 +393,51 @@ public class FormularioPublicacaoController implements Initializable {
 		return null;
 	}
 	
-	private void upload_imagem(File imagem) {
-		HttpEntity entity = MultipartEntityBuilder.create().addBinaryBody("imagem", imagem).build();
+	private void upload_imagem(String arquivo_antigo, String nome_arquivo, File imagem) {
+		if( nome_arquivo == null || imagem == null ) return;
 		
-		String url_api = "127.0.0.1/Web/api/upload_imagem.php";
-		HttpPost request = new HttpPost( url_api );
+		System.out.println( "Iniciando upload!" );		
+		Arquivo.replace("../img/uploads/publicacoes/", arquivo_antigo, nome_arquivo, imagem);
+	}
+	
+	private void upload_imagens_publicacao() {
+		System.out.println("Preparando Upload!");
 		
-		HttpClient client = HttpClientBuilder.create().build();
+		File imagemPrincipal = imagens_publicacao.get("imagemPrincipal");
+        File imagemA = imagens_publicacao.get("imagemA");
+        File imagemB = imagens_publicacao.get("imagemB");
+        File imagemC = imagens_publicacao.get("imagemC");
+        File imagemD = imagens_publicacao.get("imagemD");
+        
+        if( imagemPrincipal != null ) {
+            String nome_arquivo_imagem_principal = "post_" + publicacao_alvo.getId() + "_imagem_principal." + FilenameUtils.getExtension( imagemPrincipal.getName() );	
+            upload_imagem(publicacao_alvo.getImagemPrincipal(), nome_arquivo_imagem_principal, imagemPrincipal);
+            publicacao_alvo.setImagemPrincipal( nome_arquivo_imagem_principal );
+        }
+		
+        if( imagemA != null ) {
+            String nome_arquivo_imagem_a = "post_" + publicacao_alvo.getId() + "_imagem_a." + FilenameUtils.getExtension( imagemA.getName() );
+            upload_imagem(publicacao_alvo.getImagemA(), nome_arquivo_imagem_a, imagemA);
+            publicacao_alvo.setImagemA( nome_arquivo_imagem_a );
+        }
+		
+        if( imagemB != null ) {
+            String nome_arquivo_imagem_b = "post_" + publicacao_alvo.getId() + "_imagem_b." + FilenameUtils.getExtension( imagemB.getName() );        
+            upload_imagem(publicacao_alvo.getImagemB(), nome_arquivo_imagem_b, imagemB);
+            publicacao_alvo.setImagemB( nome_arquivo_imagem_b );
+        }
+		
+        if( imagemC != null ) {
+            String nome_arquivo_imagem_c = "post_" + publicacao_alvo.getId() + "_imagem_c." + FilenameUtils.getExtension( imagemC.getName() );        
+            upload_imagem(publicacao_alvo.getImagemC(), nome_arquivo_imagem_c, imagemC);
+            publicacao_alvo.setImagemC( nome_arquivo_imagem_c );
+        }
+		
+        if( imagemD != null ) {
+            String nome_arquivo_imagem_d = "post_" + publicacao_alvo.getId() + "_imagem_d." + FilenameUtils.getExtension( imagemD.getName() );        
+            upload_imagem(publicacao_alvo.getImagemD(), nome_arquivo_imagem_d, imagemD);
+            publicacao_alvo.setImagemD( nome_arquivo_imagem_d );
+        }
 	}
 	
 	private class AcaoBotaoSelecaoImagem implements EventHandler<ActionEvent> {
@@ -414,11 +481,13 @@ public class FormularioPublicacaoController implements Initializable {
 					imagens_publicacao.remove( chave_identificadora_imagem );
 				}
 				
-				imagens_publicacao.put( chave_identificadora_imagem, imagem_selecionada );
+				imagens_publicacao.put( chave_identificadora_imagem, arquivoImagem );
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			System.out.println( imagens_publicacao );
 		}
 		
 	}
@@ -626,8 +695,7 @@ public class FormularioPublicacaoController implements Initializable {
 				publicacao_alvo.setLimiteQuilometragem( limiteQuilometragem );
 				publicacao_alvo.setValorDiaria( valorDiaria );
 				publicacao_alvo.setValorCombustivel( valorCombustivel );
-				publicacao_alvo.setDisponivelOnline( disponivelOnline );
-				publicacao_alvo.setImagemPrincipal( "imgimgimg" );
+				publicacao_alvo.setDisponivelOnline( disponivelOnline );				
 				publicacao_alvo.setIdStatusPublicacao( STATUS_PUBLICACAO_DISPONIVEL );
 				publicacao_alvo.setIdAgencia(id_agencia);
 				publicacao_alvo.setIdUsuario( id_usuario_juridico );
@@ -663,30 +731,16 @@ public class FormularioPublicacaoController implements Initializable {
 					}
 					
 				});
-				
-				ThreadTask<Integer> task_inserir_publicacao = new ThreadTask<Integer>( new Callable<Integer>() {
-					@Override
-					public Integer call() throws Exception {
-						// TODO Auto-generated method stub						
-						return publicacao_alvo.inserir();
-					}
-				}, new CustomCallable<Integer>() {
-					@Override
-					public Integer call() throws Exception {
-						// TODO Auto-generated method stub
-						Integer id_publicacao_inserida = (Integer) this.getParametro();
-						
-						publicacao_alvo.setId( id_publicacao_inserida );
-						task_relacionamentos.run();	
-						return super.call();
-					}
-				});
-				
+					
 				ThreadTask<Boolean> task_atualizar_publicacao = new ThreadTask<Boolean>( new Callable<Boolean>() {
-		
+					
 					@Override
 					public Boolean call() throws Exception {
-						// TODO Auto-generated method stub						
+						// TODO Auto-generated method stub	
+						
+						if( imagens_publicacao != null && imagens_publicacao.size() > 0 )
+							upload_imagens_publicacao();
+						
 						return publicacao_alvo.atualizar();
 					}
 					
@@ -700,7 +754,35 @@ public class FormularioPublicacaoController implements Initializable {
 					}
 					
 				});
-											
+				
+				ThreadTask<Integer> task_inserir_publicacao = new ThreadTask<Integer>( new Callable<Integer>() {
+					@Override
+					public Integer call() throws Exception {
+						// TODO Auto-generated method stub	
+						
+						Integer id_publicacao_inserida = publicacao_alvo.inserir();
+						publicacao_alvo.setId( id_publicacao_inserida );
+						
+						if( imagens_publicacao.size() > 0 )
+							upload_imagens_publicacao();
+																		
+						return id_publicacao_inserida;
+					}
+				}, new CustomCallable<Integer>() {
+					@Override
+					public Integer call() throws Exception {
+						// TODO Auto-generated method stub
+						Integer id_publicacao_inserida = (Integer) this.getParametro();
+						
+						publicacao_alvo.setId( id_publicacao_inserida );						
+						task_relacionamentos.run();	
+						imagens_publicacao = null;
+						task_atualizar_publicacao.run();
+						
+						return super.call();
+					}
+				});
+																		
 				if( modo_insercao ) {			
 					task_inserir_publicacao.runWithProgress();
 				} else {

@@ -28,12 +28,11 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
-	}
-
-	@FXML public void login() {
 		txtEmail.setText("juridico@email.com");
 		txtSenha.setText("123");
+	}
 
+	@FXML public void login() {		
 		String email = txtEmail.getText().trim();
 		String senha = txtSenha.getText().trim();
 
@@ -81,7 +80,7 @@ public class LoginController implements Initializable {
 
 		if( busca_usuario.size() > 0 ) {
 			Usuario usuario_alvo = busca_usuario.get(0);
-
+			
 			String hash2a = usuario_alvo.getSenha().replace("2y", "2a");
 
 			if( BCrypt.checkpw(senha, hash2a) ) {

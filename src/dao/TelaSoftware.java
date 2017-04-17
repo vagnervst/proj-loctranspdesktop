@@ -5,7 +5,7 @@ import model.DatabaseUtils;
 public class TelaSoftware extends DatabaseUtils {
 	private String nome_tabela = "tbl_tela_software";
 
-	private int id;
+	private Integer id;
 	private String titulo;
 	private boolean leitura, escrita, edicao, remocao;
 
@@ -15,10 +15,10 @@ public class TelaSoftware extends DatabaseUtils {
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getTitulo() {
@@ -52,6 +52,7 @@ public class TelaSoftware extends DatabaseUtils {
 		this.remocao = remocao;
 	}
 
+	@Override
 	public String toString() {
 		return this.titulo;
 	}
