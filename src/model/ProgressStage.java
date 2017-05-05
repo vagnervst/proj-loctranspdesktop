@@ -12,8 +12,8 @@ import javafx.stage.StageStyle;
 public class ProgressStage {
 	
 	private ProgressIndicator progress;
-	private Stage stage;
-		
+	private Stage stage;	
+	
 	public void show() {
 		progress = new ProgressIndicator(-1);
 		

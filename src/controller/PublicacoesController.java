@@ -40,9 +40,9 @@ public class PublicacoesController implements Initializable {
 		colunas.put("cod", "id");
 		colunas.put("titulo", "titulo");
 		colunas.put("Tipo", "tipoVeiculo");
-		colunas.put("Valor da diï¿½ria", "valorDiaria");
+		colunas.put("Valor da diária", "valorDiaria");
 		colunas.put("Valor do Combustï¿½vel", "valorCombustivel");
-		colunas.put("Locaï¿½ï¿½es", "locacoes");
+		colunas.put("Locações", "locacoes");
 		colunas.put("Status", "statusPublicacao");
 		
 		if( Login.get_tipo_conta() == Login.JURIDICO ) {

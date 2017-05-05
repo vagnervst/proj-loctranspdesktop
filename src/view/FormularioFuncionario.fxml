@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -53,7 +54,7 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtSenhaFuncionario" prefHeight="35.0" promptText="Digite a senha..." />
+                                          <PasswordField fx:id="txtSenhaFuncionario" prefHeight="35.0" promptText="Digite a senha..." />
                                        </children>
                                        <HBox.margin>
                                           <Insets right="5.0" />
@@ -66,7 +67,7 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="txtConfSenhaFuncionario" prefHeight="35.0" promptText="Digite a senha novamente..." />
+                                          <PasswordField fx:id="txtConfSenhaFuncionario" prefHeight="35.0" promptText="Digite a senha novamente..." />
                                        </children>
                                        <HBox.margin>
                                           <Insets left="5.0" />

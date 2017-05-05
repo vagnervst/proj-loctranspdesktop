@@ -21,6 +21,13 @@ public class Context {
 		return long_data;
 	}
 	
+	public static boolean getBooleanData(String key) {					
+		boolean bool_data = ( data.get(key) instanceof Boolean )? (boolean) data.get(key) : false;
+				
+		removeData(key);
+		return bool_data;
+	}
+	
 	public static <T> List<T> getListData(String key) {
 		@SuppressWarnings("unchecked")
 		List<T> list_data = ( data.get(key) instanceof List )? (List<T>) data.get(key) : null;
@@ -39,6 +46,8 @@ public class Context {
 	}
 	
 	public static void addData( String key, Object new_data ) {
+		if( data.containsKey(key) ) removeData(key);
+		
 		data.put(key, new_data);
 	}
 }

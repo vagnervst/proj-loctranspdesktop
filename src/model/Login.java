@@ -11,6 +11,18 @@ public class Login {
 	private static int tipo_conta;
 	private static Integer id_usuario;
 
+	public static String get_hash_preparada(String hash, String formato_alvo) {
+		String resultado = null;
+
+		if( formato_alvo.equals("2a") ) {
+			resultado = hash.replace("2y", "2a");
+		} else if( formato_alvo.equals("2y") ) {
+			resultado = hash.replace("2a", "2y");
+		}
+
+		return resultado;
+	}
+
 	public static void set_id_usuario(Integer id, int tipoConta) {
 		id_usuario = id;
 		tipo_conta = tipoConta;
@@ -26,7 +38,7 @@ public class Login {
 
 	public static void get_id_juridico(CustomCallable callable) {
 
-        ThreadTask task = null;
+        ThreadTask<Integer> task = null;
         if( tipo_conta == JURIDICO ) {
 
         	task = new ThreadTask<Integer>(new Callable<Integer>(){
@@ -40,10 +52,10 @@ public class Login {
 
 		} else {
 
-            task = new ThreadTask<List<Map>>(new Callable<List<Map>>(){
+            task = new ThreadTask<Integer>(new Callable<Integer>(){
 
 				@Override
-				public List<Map> call() throws Exception {
+				public Integer call() throws Exception {
 					// TODO Auto-generated method stub
 					String query = "SELECT e.idUsuarioJuridico ";
 		            query += "FROM tbl_funcionario AS f ";
@@ -55,19 +67,19 @@ public class Login {
 
 		            DatabaseUtils db = new DatabaseUtils();
 
-					return db.get_list_from_result_set( db.executarQuery(query), Arrays.asList("idUsuarioJuridico"));
+					return (Integer) db.get_list_from_result_set( db.executarQuery(query), Arrays.asList("idUsuarioJuridico")).get(0).get("idUsuarioJuridico");
 				}
 			}, callable);
 
 		}
-        
+
         task.run();
 	}
 
 	public static void get_id_empresa(CustomCallable callable) {
 		ThreadTask<Integer> task = null;
 		if( tipo_conta == JURIDICO ) {
-			
+
             task = new ThreadTask<Integer>(new Callable<Integer>() {
 
 				@Override
@@ -77,10 +89,10 @@ public class Login {
 		            query += "FROM tbl_empresa AS e ";
 		            query += "INNER JOIN tbl_usuario AS u ";
 		            query += "ON u.id = e.idUsuarioJuridico ";
-		            query += "WHERE u.id = " + id_usuario;		            
-		            
+		            query += "WHERE u.id = " + id_usuario;
+
 					DatabaseUtils db = new DatabaseUtils();
-					
+
 					return new Integer( (Integer) db.get_list_from_result_set(db.executarQuery(query), Arrays.asList("idEmpresa")).get(0).get("idEmpresa") );
 				}
 
@@ -94,16 +106,16 @@ public class Login {
 				public Integer call() throws Exception {
 					// TODO Auto-generated method stub
                     String query = "SELECT f.idEmpresa ";
-                    query += "FROM tbl_funcionario AS f ";                    
+                    query += "FROM tbl_funcionario AS f ";
                     query += "WHERE f.id = " + id_usuario;
 
 					DatabaseUtils db = new DatabaseUtils();
 					return new Integer( (Integer) db.get_list_from_result_set(db.executarQuery(query), Arrays.asList("idEmpresa")).get(0).get("idEmpresa") );
 				}
 
-            }, callable);					
+            }, callable);
 		}
-		
+
 		task.run();
 	}
 }
