@@ -3,13 +3,20 @@ package model;
 import java.util.concurrent.Callable;
 
 import javafx.concurrent.Task;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 
 public class ThreadTask<T> {
 
 	private Callable<T> action;
 	private CustomCallable<T> resultfunc;
 	private Thread thread;
-	private ProgressStage progress;
+	private StackPane progressPane;
+	private Pane conteudo_a_ocultar;
 	
 	public ThreadTask( Callable<T> action, CustomCallable<T> call ) {
 		this.action = action;
@@ -30,8 +37,8 @@ public class ThreadTask<T> {
 				// TODO Auto-generated method stub
 				super.succeeded();
 				try {
-					resultfunc.putParametro( this.get() );
-					resultfunc.call();
+					resultfunc.putParametro( this.get() );				
+					resultfunc.call();														
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -44,12 +51,12 @@ public class ThreadTask<T> {
 		thread.start();		
 	}
 	
-	public void runWithProgress() {
+	public void runWithProgress(Pane conteudo_a_ocultar) {
 		Task task = new Task(){
 
 			@Override
 			protected Object call() throws Exception {
-				// TODO Auto-generated method stub
+				// TODO Auto-generated method stub				
 				return action.call();
 			}
 			
@@ -57,10 +64,15 @@ public class ThreadTask<T> {
 			protected void succeeded() {
 				// TODO Auto-generated method stub
 				super.succeeded();
-				try {
+				try {														
+					conteudo_a_ocultar.getChildren().remove( conteudo_a_ocultar.getChildren().indexOf( progressPane ) );
+					
+					for( int i = 0; i < conteudo_a_ocultar.getChildren().size(); ++i) {
+						conteudo_a_ocultar.getChildren().get(i).setVisible(true);						
+					}
+					
 					resultfunc.putParametro( this.get() );
 					resultfunc.call();					
-					progress.hide();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -68,9 +80,19 @@ public class ThreadTask<T> {
 			}
 			
 		};
-					
-		progress = new ProgressStage();
-		progress.show();
+		
+		for( int i = 0; i < conteudo_a_ocultar.getChildren().size(); ++i) {
+			conteudo_a_ocultar.getChildren().get(i).setVisible(false);					
+		}
+		
+		progressPane = new StackPane();		
+		ProgressIndicator progress = new ProgressIndicator();
+		progress.setMaxWidth(100);
+		progress.setMaxHeight(100);
+		progressPane.setAlignment( Pos.CENTER );		
+		progressPane.getChildren().add( progress );
+		progressPane.setPrefSize( conteudo_a_ocultar.getPrefWidth(), conteudo_a_ocultar.getPrefHeight() );
+		conteudo_a_ocultar.getChildren().add( progressPane );		
 		
 		thread = new Thread( task );
 		thread.start();

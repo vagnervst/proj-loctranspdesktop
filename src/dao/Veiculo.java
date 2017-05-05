@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ public class Veiculo extends DatabaseUtils {
 	private Integer id, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;
 	private Integer ano, qtdPortas;
 	private String nome, tipoMotor, codigo;
+	private BigDecimal tanque;
 	
 	public List<Veiculo> getVeiculos(String where) {
         String query = "SELECT v.* ";        
@@ -33,27 +35,6 @@ public class Veiculo extends DatabaseUtils {
         
         ResultSet resultados = this.executarQuery(query);
         return this.get_list_from_result_set(resultados, Veiculo.class);
-	}
-	
-	public List<Map> relatorio_mais_publicados( String where ) {
-		String query = "SELECT v.nome, COUNT(p.idVeiculo) AS qtd ";
-		query += "FROM tbl_publicacao AS p ";
-		query += "INNER JOIN tbl_veiculo AS v ";
-		query += "ON v.id = p.idVeiculo ";
-		query += "INNER JOIN tbl_agencia AS a ";
-		query += "ON a.id = p.idAgencia ";
-		query += "INNER JOIN tbl_empresa AS e ";
-		query += "ON e.id = a.idEmpresa ";
-        
-		if( where != null ) {
-			query += "WHERE " + where;
-		}
-		
-		query += " GROUP BY p.idVeiculo";
-		
-		ResultSet resultado = this.executarQuery(query);
-		List<Map> lista_veiculos = this.get_list_from_result_set(resultado, Arrays.asList( "nome", "qtd" ));
-		return lista_veiculos;
 	}
 	
 	public String getNome_tabela() {
@@ -148,5 +129,13 @@ public class Veiculo extends DatabaseUtils {
 	public String toString() {
 		// TODO Auto-generated method stub
 		return this.nome;
+	}
+
+	public BigDecimal getTanque() {
+		return tanque;
+	}
+
+	public void setTanque(BigDecimal tanque) {
+		this.tanque = tanque;
 	}
 }

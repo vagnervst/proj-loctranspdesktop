@@ -27,9 +27,13 @@ public class EmpresaController implements Initializable {
 	@FXML public void abrirPerfisNivelAcesso(ActionEvent event) {
 		WindowManager.abrirModal("/view/NiveisAcesso.fxml", getClass());
 	}
+	
+	@FXML public void abrirEstatisticasPublicacao(ActionEvent event) {
+		WindowManager.abrirModal("/view/RelatorioPublicacao.fxml", getClass());
+	}
 
-	@FXML public void abrirEstatisticas(ActionEvent event) {
-		WindowManager.abrirModal("/view/RelatorioVeiculos.fxml", getClass());
+	@FXML public void abrirEstatisticasLocacao(ActionEvent event) {
+		WindowManager.abrirModal("/view/RelatorioLocacoes.fxml", getClass());
 	}
 
 }

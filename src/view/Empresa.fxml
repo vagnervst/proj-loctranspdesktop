@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmpresaController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EmpresaController">
    <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <items>
@@ -23,7 +23,12 @@
                 <MenuItem fx:id="btnNiveisAcesso" mnemonicParsing="false" onAction="#abrirPerfisNivelAcesso" text="Níveis de Acesso" />
               </items>
             </MenuButton>
-            <Button layoutX="114.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Estatísticas" onAction="#abrirEstatisticas" />
+            <MenuButton layoutX="218.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" text="Estatísticas">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#abrirEstatisticasPublicacao" text="Publicações" />
+                  <MenuItem mnemonicParsing="false" onAction="#abrirEstatisticasLocacao" text="Locações" />
+               </items>
+            </MenuButton>
         </items>
       </ToolBar>
       <TitledPane animated="false" collapsible="false" layoutY="40.0" text="Sobre a Empresa" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="50.0">

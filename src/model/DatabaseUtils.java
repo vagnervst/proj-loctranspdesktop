@@ -28,9 +28,9 @@ public class DatabaseUtils {
 		relacao_tipos_sql_java.put(Boolean.class, Types.TINYINT);		
 		relacao_tipos_sql_java.put(BigDecimal.class, Types.DECIMAL);
 		relacao_tipos_sql_java.put(Double.class, Types.DECIMAL);		
-		relacao_tipos_sql_java.put(java.sql.Date.class, Types.DATE);
-		relacao_tipos_sql_java.put(java.util.Date.class, Types.DATE);
-		relacao_tipos_sql_java.put(Timestamp.class, Types.DATE);
+		relacao_tipos_sql_java.put(java.sql.Date.class, Types.TIMESTAMP);
+		relacao_tipos_sql_java.put(java.util.Date.class, Types.TIMESTAMP);
+		relacao_tipos_sql_java.put(Timestamp.class, Types.TIMESTAMP);
 	}
 
 	public <T extends DatabaseUtils> DatabaseUtils getInstanceOfT(Class<? extends DatabaseUtils> class1) {

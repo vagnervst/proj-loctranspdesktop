@@ -252,5 +252,9 @@ public class Publicacao extends DatabaseUtils {
 	public void setImagemD(String imagemD) {
 		this.imagemD = imagemD;
 	}	
-	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return String.format("%d - %s", this.id, this.titulo);
+	}
 }

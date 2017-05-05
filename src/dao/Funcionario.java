@@ -46,9 +46,7 @@ public class Funcionario extends DatabaseUtils {
         String query = "SELECT f.* ";
         query += "FROM tbl_funcionario AS f ";
         query += "INNER JOIN tbl_empresa AS e ";
-        query += "ON e.id = ? ";
-        query += "INNER JOIN tbl_agencia AS a ";
-        query += "ON a.idEmpresa = e.id"; 
+        query += "ON e.id = ? ";        
         
         ResultSet resultado = this.executarQuery(query, Arrays.asList( idEmpresa ));
         List<Funcionario> lista_funcionarios = this.get_list_from_result_set(resultado, Funcionario.class);

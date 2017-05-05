@@ -16,14 +16,14 @@
       <ToolBar prefHeight="42.0" prefWidth="700.0">
         <items>
           <Button fx:id="btnPublicacoes" mnemonicParsing="false" onAction="#abrirPublicacoes" prefHeight="30.0" prefWidth="100.0" text="Publicações" />
-            <Button layoutX="10.0" layoutY="13.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Solicitações" />
+            <Button layoutX="10.0" layoutY="13.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Solicitações" onAction="#abrirSolicitacoes" />
             <MenuButton mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Clientes">
               <items>
                 <MenuItem mnemonicParsing="false" text="Buscar Cliente" />
                 <MenuItem mnemonicParsing="false" text="Cadastrar Cliente" />
               </items>
             </MenuButton>
-            <Button fx:id="btnGerencia" layoutX="174.0" layoutY="13.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Gerência" onAction="#abrirGerencia" />
+            <Button fx:id="btnGerencia" layoutX="174.0" layoutY="13.0" mnemonicParsing="false" onAction="#abrirGerencia" prefHeight="30.0" prefWidth="100.0" text="Gerência" />
         </items>
       </ToolBar>
       <TitledPane animated="false" collapsible="false" layoutX="15.0" layoutY="50.0" prefHeight="200.0" prefWidth="670.0" text="Minhas informações">
@@ -114,5 +114,6 @@
             </AnchorPane>
         </content>
       </TitledPane>
+      <Button fx:id="btnSair" layoutX="586.0" layoutY="456.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Sair" />
    </children>
 </AnchorPane>
