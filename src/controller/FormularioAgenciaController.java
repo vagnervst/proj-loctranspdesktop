@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import dao.Agencia;
 import dao.Cidade;
 import dao.Estado;
+import dao.Funcionario;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +44,8 @@ public class FormularioAgenciaController implements Initializable {
 
 	Integer idEmpresa;
 	Agencia agencia_selecionada = null;
-
+	
+	Integer id_agencia;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -59,7 +61,7 @@ public class FormularioAgenciaController implements Initializable {
 				ComboBoxUtils.popular_combobox(cbEstado, new Estado());
 				ComboBoxUtils.popular_combobox(cbCidade, new Cidade());
 
-				Integer id_agencia = Context.getIntData("idAgencia");
+				id_agencia = Context.getIntData("idAgencia");
 
 				if( id_agencia != null && id_agencia != -1 ) {
 					agencia_selecionada = new Agencia().buscar("id = ?", Arrays.asList( id_agencia ), Agencia.class).get(0);
@@ -79,8 +81,62 @@ public class FormularioAgenciaController implements Initializable {
 				return super.call();
 			}
 		});
+		
+		controle_permissoes();
 	}
+	
+	public void controle_permissoes() {
+		if( Login.get_tipo_conta() == Login.FUNCIONARIO ) {
+			Funcionario funcionario = new Funcionario();
+			funcionario.setId( Login.get_id_usuario() );
 
+			funcionario.getPermissoes( new CustomCallable<List<Map>>() {
+
+				@Override
+				public List<Map> call() throws Exception {
+					// TODO Auto-generated method stub
+					List<Map> telas_permitidas = (List<Map>) getParametro();
+					
+					final int cod_tela_agencias = 3;
+                    
+                    boolean tela_agencias = false;
+                    
+					for( int i = 0; i < telas_permitidas.size(); ++i ) {
+
+						Map<String, Object> tela = telas_permitidas.get(i);
+						
+						int codigo_tela = ((int) tela.get("cod"));
+						
+						if( codigo_tela == cod_tela_agencias ) {
+							tela_agencias = true;
+							
+							if( tela.get("remocao") == null ) {
+								btnRemover.setDisable(true);							
+							}
+
+							if( tela.get("edicao") == null && id_agencia != -1 ) {
+								btnSalvar.setDisable(true);
+							}
+							
+							if( tela.get("escrita") == null && id_agencia == -1 ) {
+								btnSalvar.setDisable(true);
+							}
+							
+						}
+					}
+
+                    if( tela_agencias == false ) {
+                    	btnRemover.setDisable(true);
+                    	btnSalvar.setDisable(true);
+                    }                    
+                    
+					return super.call();
+				}
+
+			});
+		}
+	}
+	
 	private void set_status_formulario(boolean status) {
 		cbEstado.setDisable(!status);
 		cbCidade.setDisable(!status);

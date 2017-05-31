@@ -10,13 +10,14 @@ import model.DatabaseUtils;
 
 public class Veiculo extends DatabaseUtils {
 	private String nome_tabela = "tbl_veiculo";
-	private Integer id, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;
+	private Integer id, idCategoriaVeiculo, idFabricante, idTipoCombustivel, idTipoVeiculo, idTransmissao;	
 	private Integer ano, qtdPortas;
 	private String nome, tipoMotor, codigo;
 	private BigDecimal tanque;
-	
+	private Boolean visivel;
+
 	public List<Veiculo> getVeiculos(String where) {
-        String query = "SELECT v.* ";        
+        String query = "SELECT v.* ";
         query += "FROM tbl_veiculo AS v ";
         query += "INNER JOIN tbl_tipoveiculo AS tv ";
         query += "ON tv.id = v.idTipoVeiculo ";
@@ -24,25 +25,25 @@ public class Veiculo extends DatabaseUtils {
         query += "ON cv.id = v.idCategoriaVeiculo ";
         query += "INNER JOIN tbl_fabricanteveiculo AS fv ";
         query += "ON fv.id = v.idFabricante ";
-        query += "INNER JOIN tbl_tipocombustivel AS tc ";
+        query += "LEFT JOIN tbl_tipocombustivel AS tc ";
         query += "ON tc.id = v.idTipoCombustivel ";
-        query += "INNER JOIN tbl_transmissaoveiculo AS t ";
+        query += "LEFT JOIN tbl_transmissaoveiculo AS t ";
         query += "ON t.id = v.idTransmissao";
-        
+
         if( where != null ) {
         	query += " WHERE " + where;
         }
-        
+
         ResultSet resultados = this.executarQuery(query);
         return this.get_list_from_result_set(resultados, Veiculo.class);
 	}
-	
+
 	public String getNome_tabela() {
 		return nome_tabela;
 	}
 	public void setNome_tabela(String nome_tabela) {
 		this.nome_tabela = nome_tabela;
-	}	
+	}
 	public String getNome() {
 		return nome;
 	}
@@ -60,7 +61,7 @@ public class Veiculo extends DatabaseUtils {
 	}
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}	
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -137,5 +138,13 @@ public class Veiculo extends DatabaseUtils {
 
 	public void setTanque(BigDecimal tanque) {
 		this.tanque = tanque;
+	}
+
+	public Boolean getVisivel() {
+		return visivel;
+	}
+
+	public void setVisivel(Boolean visivel) {
+		this.visivel = visivel;
 	}
 }

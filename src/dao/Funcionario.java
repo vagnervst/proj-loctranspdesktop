@@ -4,13 +4,17 @@ import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
+import model.CustomCallable;
 import model.DatabaseUtils;
+import model.Login;
+import model.ThreadTask;
 
 public class Funcionario extends DatabaseUtils {
 	private String nome_tabela = "tbl_funcionario";
 	private Integer id, idNivelAcesso, idAgencia, idEmpresa;
-	int statusOnline;
+	Integer statusOnline;
 	private String nome, credencial, senha, telefone, celular, email;
 
 	public Funcionario() {
@@ -54,6 +58,46 @@ public class Funcionario extends DatabaseUtils {
         return lista_funcionarios;
 	}
 	
+	public void getPermissoes( CustomCallable<List<Map>> callable ) {
+					
+		ThreadTask<Funcionario> info_funcionario = new ThreadTask<Funcionario>( new Callable<Funcionario>() {
+			
+			@Override
+			public Funcionario call() throws Exception {
+				// TODO Auto-generated method stub											
+				return new Funcionario().buscar("id = ?", Arrays.asList( id ), Funcionario.class).get(0);
+			}
+			
+		}, new CustomCallable<Funcionario>() {
+			
+			@Override
+			public Funcionario call() throws Exception {
+				// TODO Auto-generated method stub
+				Funcionario funcionario_encontrado = (Funcionario) getParametro();
+				
+				ThreadTask<List<Map>> telas_permitidas = new ThreadTask<List<Map>>( new Callable<List<Map>>() {
+					
+					@Override
+					public List<Map> call() throws Exception {
+						// TODO Auto-generated method stub
+						NivelAcessoJuridico nivel_acesso_funcionario = new NivelAcessoJuridico();
+						nivel_acesso_funcionario.setId( funcionario_encontrado.getIdNivelAcesso() );
+						
+						return nivel_acesso_funcionario.getTelasPermitidas();
+					}
+					
+				}, callable);
+				
+				telas_permitidas.run();
+				
+				return super.call();
+			}
+			
+		});
+		
+		info_funcionario.run();	
+	}
+	
 	public String getNome_tabela() {
 		return nome_tabela;
 	}
@@ -79,7 +123,7 @@ public class Funcionario extends DatabaseUtils {
 		this.idAgencia = idAgencia;
 	}
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
@@ -109,11 +153,11 @@ public class Funcionario extends DatabaseUtils {
 		this.email = email;
 	}
 
-	public int getStatusOnline() {
+	public Integer getStatusOnline() {
 		return statusOnline;
 	}
 
-	public void setStatusOnline(int statusOnline) {
+	public void setStatusOnline(Integer statusOnline) {
 		this.statusOnline = statusOnline;
 	}
 

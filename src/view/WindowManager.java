@@ -20,7 +20,8 @@ public class WindowManager {
 		try {
 			Parent root = FXMLLoader.load( classe.getResource( caminho_fxml ) );
 			
-			stage_alvo.setScene(new Scene(root));			
+			stage_alvo.setScene(new Scene(root));	
+			stage_alvo.setResizable(false);
 			stage_alvo.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -36,6 +37,7 @@ public class WindowManager {
 			stage.setScene(new Scene(root));
 			//stage.initStyle(StageStyle.UTILITY);
 			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
 			stage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

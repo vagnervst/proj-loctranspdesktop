@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
 import dao.Agencia;
+import dao.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,17 +17,23 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Context;
+import model.CustomCallable;
+import model.Login;
 import model.TableViewUtils;
 import view.WindowManager;
+import javafx.scene.control.Button;
 
 public class AgenciaController implements Initializable {
 
 	@FXML TableView<List<Map>> tabelaAgencias;
+	@FXML Button btnEditar;
+	@FXML Button btnCadastrar;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		preparar_tabela_agencias();
+		controle_permissoes();
 	}		
 	
 	public void preparar_tabela_agencias() {			
@@ -46,6 +53,54 @@ public class AgenciaController implements Initializable {
 				return new Agencia().getAgencias();
 			}
 		});
+	}
+	
+	public void controle_permissoes() {
+		if( Login.get_tipo_conta() == Login.FUNCIONARIO ) {
+			Funcionario funcionario = new Funcionario();
+			funcionario.setId( Login.get_id_usuario() );
+
+			funcionario.getPermissoes( new CustomCallable<List<Map>>() {
+
+				@Override
+				public List<Map> call() throws Exception {
+					// TODO Auto-generated method stub
+					List<Map> telas_permitidas = (List<Map>) getParametro();
+					
+					final int cod_tela_agencias = 3;
+                    
+                    boolean tela_agencias = false;
+                    
+					for( int i = 0; i < telas_permitidas.size(); ++i ) {
+
+						Map<String, Object> tela = telas_permitidas.get(i);
+						
+						int codigo_tela = ((int) tela.get("cod"));
+						
+						if( codigo_tela == cod_tela_agencias ) {
+							tela_agencias = true;
+		
+							if( tela.get("edicao") == null ) {
+								btnEditar.setDisable(true);
+							}
+							
+							if( tela.get("escrita") == null ) {
+								btnCadastrar.setDisable(true);
+							}
+							
+						}
+					}
+
+                    if( tela_agencias == false ) {
+                    	btnEditar.setDisable(true);
+                    	btnCadastrar.setDisable(true);
+                    }                    
+                    
+					return super.call();
+				}
+
+			});
+		}
 	}
 	
 	@FXML public void abrirCadastrar(ActionEvent event) {

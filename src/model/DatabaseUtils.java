@@ -2,6 +2,7 @@ package model;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.net.ConnectException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,13 +24,14 @@ public class DatabaseUtils {
 		relacao_tipos_sql_java = new HashMap<>();
 
 		relacao_tipos_sql_java.put(String.class, Types.VARCHAR);
+		relacao_tipos_sql_java.put(Character.class, Types.CHAR);
 		relacao_tipos_sql_java.put(Integer.class, Types.INTEGER);
 		relacao_tipos_sql_java.put(Long.class, Types.INTEGER);
-		relacao_tipos_sql_java.put(Boolean.class, Types.TINYINT);		
+		relacao_tipos_sql_java.put(Boolean.class, Types.TINYINT);
 		relacao_tipos_sql_java.put(BigDecimal.class, Types.DECIMAL);
-		relacao_tipos_sql_java.put(Double.class, Types.DECIMAL);		
-		relacao_tipos_sql_java.put(java.sql.Date.class, Types.TIMESTAMP);
-		relacao_tipos_sql_java.put(java.util.Date.class, Types.TIMESTAMP);
+		relacao_tipos_sql_java.put(Double.class, Types.DECIMAL);
+		relacao_tipos_sql_java.put(java.sql.Date.class, Types.DATE);
+		relacao_tipos_sql_java.put(java.util.Date.class, Types.DATE);
 		relacao_tipos_sql_java.put(Timestamp.class, Types.TIMESTAMP);
 	}
 
@@ -87,8 +89,8 @@ public class DatabaseUtils {
 		for (Field campo : this.getClass().getDeclaredFields()) {
 			campo.setAccessible(true);
 
-			if (campo.getName().equals(nome_campo)) {
-				try {					
+			if( campo.getName().equals(nome_campo) ) {
+				try {
 					campo.set( objeto_alvo, valor );
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
@@ -230,8 +232,8 @@ public class DatabaseUtils {
 
 	protected Integer executarQueryGetKey(String query, List<Object> valores) {
 		PreparedStatement statement = this.preparar_statement_keys(query, valores);
-
 		System.out.println( statement );
+		
 		Integer resultado = key_from_statement(statement);
 		return resultado;
 	}
@@ -239,32 +241,29 @@ public class DatabaseUtils {
 	protected ResultSet executarQuery(String query) {
 		PreparedStatement statement = this.preparar_statement(query);
 
-		System.out.println(statement);
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
 
 	protected ResultSet executarQuery(String query, List<Object> parametros) {
 		PreparedStatement statement = this.preparar_statement(query, parametros);
-		
-		System.out.println(statement);
+
 		ResultSet resultado = resultado_from_statement(statement);
 		return resultado;
 	}
 
 	protected boolean executarQueryAlteracao(String query) {
 		PreparedStatement statement = this.preparar_statement(query);
-		
-		System.out.println(statement);
+
 		boolean resultado = boolean_from_statement(statement);
 
 		return resultado;
 	}
 
-	protected boolean executarQueryAlteracao(String query, List<Object> parametros) {							
+	protected boolean executarQueryAlteracao(String query, List<Object> parametros) {
 		PreparedStatement statement = this.preparar_statement(query, parametros);
-		
 		System.out.println(statement);
+		
 		boolean resultado = boolean_from_statement(statement);
 		return resultado;
 	}
@@ -312,7 +311,7 @@ public class DatabaseUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		if (statement != null && parametros != null) {
 
 			int indice_parametro = 1;
@@ -347,10 +346,10 @@ public class DatabaseUtils {
 		}
 
 		if (statement != null && parametros != null) {
-			
+
 			int indice_parametro = 1;
 			for( Object parametro : parametros ) {
-				
+
 				int tipo_sql_valor;
 				if( parametro == null ) {
 					try {
@@ -361,7 +360,7 @@ public class DatabaseUtils {
 					}
 				} else {
 					tipo_sql_valor = this.get_tipo_sql_correspondente( parametro.getClass() );
-																		
+
 					try {
 						statement.setObject(indice_parametro, parametro, tipo_sql_valor);
 					} catch (SQLException e) {
@@ -369,7 +368,7 @@ public class DatabaseUtils {
 						e.printStackTrace();
 					}
 				}
-				
+
 				++indice_parametro;
 			}
 
@@ -410,7 +409,7 @@ public class DatabaseUtils {
 	}
 
 	protected <T extends DatabaseUtils> List<T> get_list_from_result_set(ResultSet resultados, Class<T> tipo) {
-				
+
 		List<T> lista = new ArrayList<>();
 		try {
 			while (resultados.next()) {
@@ -420,10 +419,9 @@ public class DatabaseUtils {
 
 				for (int i = 0; i < campos.length; ++i) {
 					String nome_campo = String.valueOf( campos[i] );
-					
-					
+
 					Object valor_campo = resultados.getObject( nome_campo );
-					
+
 					objeto.set_campo_valor(objeto, nome_campo, valor_campo);
 				}
 
@@ -507,8 +505,9 @@ public class DatabaseUtils {
             ++contador_valores;
 		}
 
-		query += ")";
-				
+		query += ")";			
+		
+		System.out.println( query );
 		return this.executarQueryGetKey(query, valores);
 	}
 
@@ -555,7 +554,7 @@ public class DatabaseUtils {
 	public boolean atualizar() {
 		String query = "UPDATE " + this.get_nome_tabela() + " SET ";
 
-		Map<String, Object> campo_valor = this.get_campos_valor(true);		
+		Map<String, Object> campo_valor = this.get_campos_valor(true);
 
 		int contador = 0;
 
@@ -563,7 +562,7 @@ public class DatabaseUtils {
 		for (Map.Entry<String, Object> entry : campo_valor.entrySet()) {
 			++contador;
 
-			if (!entry.getKey().equals("id")) {
+			if (!entry.getKey().equals("id") && entry.getValue() != null) {
 				query += entry.getKey() + " = ?";
 				valores.add(entry.getValue());
 
@@ -575,7 +574,7 @@ public class DatabaseUtils {
 		}
 
 		query += " WHERE id = " + campo_valor.get("id");
-				
+
 		return this.executarQueryAlteracao(query, valores);
 	}
 

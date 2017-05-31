@@ -15,14 +15,14 @@ import model.Server;
 
 public class Publicacao extends DatabaseUtils {
 	private String nome_tabela = "tbl_publicacao";
-	
+
 	private String titulo, descricao, imagemPrincipal, imagemA, imagemB, imagemC, imagemD;
 	private Integer id, idStatusPublicacao, idAgencia, idUsuario, idFuncionario, idVeiculo;
 	private Integer quilometragemAtual, limiteQuilometragem;
 	private Boolean disponivelOnline;
-	private BigDecimal valorDiaria, valorCombustivel, valorQuilometragem, precoMedio;
+	private BigDecimal valorDiaria, valorCombustivel, valorQuilometragem, valorVeiculo;
 	private Timestamp dataPublicacao;
-	
+
     public List<Map> getPublicacoes(String where) {
         String query = "SELECT p.id, p.titulo, t.titulo AS tipoVeiculo, p.valorDiaria, p.valorCombustivel, (SELECT COUNT(idPublicacao) FROM tbl_pedido WHERE idPublicacao = p.id) AS locacoes, st.titulo AS statusPublicacao ";
         query += "FROM tbl_publicacao AS p ";
@@ -34,74 +34,74 @@ public class Publicacao extends DatabaseUtils {
         query += "ON st.id = p.idStatusPublicacao ";
         query += "INNER JOIN tbl_agencia AS a ";
         query += "ON a.id = p.idAgencia";
-        
+
         if( where != null ) {
         	query += " WHERE " + where;
         }
-        
+
         ResultSet resultado = this.executarQuery(query);
         return this.get_list_from_result_set(resultado, Arrays.asList( "id", "titulo", "tipoVeiculo", "valorDiaria", "valorCombustivel", "locacoes", "statusPublicacao"));
     }
-    
+
 	public boolean eliminar_relacionamentos_a_acessorios() {
 		String query = "DELETE FROM publicacao_acessorioveiculo ";
 		query += "WHERE idPublicacao = " + this.id;
-		
+
 		return this.executarQueryAlteracao(query);
 	}
-	
+
 	public boolean relacionar_a_acessorio(Integer idAcessorio) {
 		String query = "INSERT INTO publicacao_acessorioveiculo(idPublicacao, idAcessorio) ";
 		query += "VALUES(" + this.id + ", " + idAcessorio + ")";
-				
+
 		return this.executarQueryAlteracao(query);
 	}
-	
+
 	public List<Integer> get_id_acessorios_relacionados() {
 		List<Integer> acessorios = new ArrayList<>();
-		
+
 		String query = "SELECT idPublicacao, idAcessorio ";
 		query += "FROM publicacao_acessorioveiculo ";
 		query += "WHERE idPublicacao = " + this.id;
-		
+
 		List<Map> acessorios_encontrados = this.get_list_from_result_set( this.executarQuery(query), Arrays.asList( "idPublicacao", "idAcessorio" ));
-		
+
 		for( int i = 0; i < acessorios_encontrados.size(); ++i ) {
 			Integer id_acessorio = (Integer) acessorios_encontrados.get(i).get("idAcessorio");
-			
+
 			acessorios.add( id_acessorio );
 		}
-		
+
 		return acessorios;
 	}
-	
-	private File download_imagem(String url) {			
+
+	private File download_imagem(String url) {
 		File imagem = new File(url);
-						
+
 		return imagem;
 	}
-	
+
 	public Map<String, File> get_imagens() {
-		
+
 		String path = Server.address + "img/uploads/publicacoes/";
 		Map<String, File> lista_imagens = new HashMap<String, File>();
-		
+
 		File imagem_principal = download_imagem( path + this.imagemPrincipal );
-		
+
 		File imagem_a = download_imagem( path + this.imagemA  );
 		File imagem_b = download_imagem( path + this.imagemB  );
 		File imagem_c = download_imagem( path + this.imagemC  );
 		File imagem_d = download_imagem( path + this.imagemD  );
-		
+
 		lista_imagens.put("imagemPrincipal", imagem_principal);
         lista_imagens.put("imagemA", imagem_a);
         lista_imagens.put("imagemB", imagem_b);
         lista_imagens.put("imagemC", imagem_c);
         lista_imagens.put("imagemD", imagem_d);
-		
+
 		return lista_imagens;
 	}
-	
+
 	public String getNome_tabela() {
 		return nome_tabela;
 	}
@@ -175,10 +175,10 @@ public class Publicacao extends DatabaseUtils {
 		this.valorQuilometragem = valorQuilometragem;
 	}
 	public BigDecimal getPrecoMedio() {
-		return precoMedio;
+		return valorVeiculo;
 	}
 	public void setPrecoMedio(BigDecimal precoMedio) {
-		this.precoMedio = precoMedio;
+		this.valorVeiculo = precoMedio;
 	}
 
 	public String getTitulo() {
@@ -251,7 +251,7 @@ public class Publicacao extends DatabaseUtils {
 
 	public void setImagemD(String imagemD) {
 		this.imagemD = imagemD;
-	}	
+	}
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub

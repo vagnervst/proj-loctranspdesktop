@@ -305,7 +305,13 @@ public class FormularioSolicitacaoController implements Initializable {
 			public List<Publicacao> call() throws Exception {
 				// TODO Auto-generated method stub
 				List<Publicacao> lista_anuncios = (List<Publicacao>) getParametro();
-				ComboBoxUtils.popular_combobox(cbAnuncios, lista_anuncios);				
+				
+				if( lista_anuncios.size() > 0 ) {	
+					cbAnuncios.setDisable(false);
+					ComboBoxUtils.popular_combobox(cbAnuncios, lista_anuncios);				
+				} else {
+					cbAnuncios.setDisable(true);
+				}
 				
 				return super.call();
 			}
@@ -352,7 +358,7 @@ public class FormularioSolicitacaoController implements Initializable {
 			public List<CNH> call() throws Exception {
 				// TODO Auto-generated method stub
 				CNH buscaCnh = new CNH();
-				List<CNH> lista_cnh = buscaCnh.buscar("idUsuario = ?", Arrays.asList( idLocatario ), CNH.class);
+				List<CNH> lista_cnh = buscaCnh.buscar("idUsuario = ? AND visivel = 1", Arrays.asList( idLocatario ), CNH.class);
 				return lista_cnh;
 			}
 			

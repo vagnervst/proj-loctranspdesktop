@@ -37,8 +37,10 @@ public class ThreadTask<T> {
 				// TODO Auto-generated method stub
 				super.succeeded();
 				try {
-					resultfunc.putParametro( this.get() );				
-					resultfunc.call();														
+					if( resultfunc != null ) {					
+						resultfunc.putParametro( this.get() );				
+						resultfunc.call();					
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -71,8 +73,10 @@ public class ThreadTask<T> {
 						conteudo_a_ocultar.getChildren().get(i).setVisible(true);						
 					}
 					
-					resultfunc.putParametro( this.get() );
-					resultfunc.call();					
+					if( resultfunc != null ) {					
+						resultfunc.putParametro( this.get() );				
+						resultfunc.call();					
+					}					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

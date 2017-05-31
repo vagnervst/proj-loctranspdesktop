@@ -118,11 +118,11 @@ public class FormularioPublicacaoController implements Initializable {
 		imagens_publicacao = new HashMap<>();
 		btnRemover.setVisible(false);
 
-		ComboBoxUtils.popular_combobox( cbTipoVeiculo, new TipoVeiculo() );
+		ComboBoxUtils.popular_combobox( cbTipoVeiculo, "visivel = ?", Arrays.asList(1), new TipoVeiculo() );
 		ComboBoxUtils.popular_combobox( cbFabricante, new FabricanteVeiculo() );
 
 		if( Login.get_tipo_conta() == Login.FUNCIONARIO ) {
-			cbAgencia.setVisible(false);
+			cbAgencia.setDisable(true);
 		} else {
 			Login.get_id_empresa( new CustomCallable() {
 
@@ -202,6 +202,54 @@ public class FormularioPublicacaoController implements Initializable {
 
 			task_busca_dados_publicacao.runWithProgress(apConteudo);
 		}
+
+		controle_permissoes();
+	}
+
+	public void controle_permissoes() {
+		if( Login.get_tipo_conta() == Login.FUNCIONARIO ) {
+			Funcionario funcionario = new Funcionario();
+			funcionario.setId( Login.get_id_usuario() );
+
+			funcionario.getPermissoes( new CustomCallable<List<Map>>() {
+
+				@Override
+				public List<Map> call() throws Exception {
+					// TODO Auto-generated method stub
+					List<Map> telas_permitidas = (List<Map>) getParametro();
+
+					final int cod_tela_publicacoes = 2;
+					
+					boolean tela_encontrada = false;
+					for( int i = 0; i < telas_permitidas.size(); ++i ) {
+
+						Map<String, Object> tela = telas_permitidas.get(i);
+
+						if( ((int) tela.get("cod")) == cod_tela_publicacoes ) {
+							tela_encontrada = true;
+							
+							if( tela.get("edicao") == null ) {
+								btnSalvar.setDisable(true);
+							}
+							
+							if( tela.get("remocao") == null ) {
+								btnRemover.setDisable(false);
+							}
+
+						}
+
+					}
+
+					if( tela_encontrada == false ) {
+						btnSalvar.setDisable(true);											
+						btnRemover.setDisable(false);
+					}
+					
+					return super.call();
+				}
+
+			});
+		}
 	}
 
 	private void preencher_acessorios(Publicacao publicacao_referencia) {
@@ -246,12 +294,38 @@ public class FormularioPublicacaoController implements Initializable {
 			public Map<String, File> call() throws Exception {
 				// TODO Auto-generated method stub
 				Map<String, File> imagens_publicacao_selecionada = (Map<String, File>) this.getParametro();
-
-				ivImagemPrincipal.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemPrincipal") ) ) );
-				ivImagemA.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemA") ) ) );
-				ivImagemB.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemB") ) ) );
-				ivImagemC.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemC") ) ) );
-				ivImagemD.setImage( new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemD") ) ) );
+				
+				Image imagem_principal = new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemPrincipal") ) );
+				Image imagem_a = new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemA") ) );
+				Image imagem_b = new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemB") ) );
+				Image imagem_c = new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemC") ) );
+				Image imagem_d = new Image( Arquivo.httpUrlFromFile( imagens_publicacao_selecionada.get("imagemD") ) );
+				
+				if( imagem_principal.isError() ) {
+					imagem_principal = new Image("/images/car_cityshare.png");
+				}
+				
+				if( imagem_a.isError() ) {
+					imagem_a = new Image("/images/car_cityshare.png");
+				}
+				
+				if( imagem_b.isError() ) {
+					imagem_b = new Image("/images/car_cityshare.png");
+				}
+				
+				if( imagem_c.isError() ) {
+					imagem_c = new Image("/images/car_cityshare.png");
+				}
+				
+				if( imagem_d.isError() ) {
+					imagem_d = new Image("/images/car_cityshare.png");
+				}
+				
+				ivImagemPrincipal.setImage( imagem_principal );
+				ivImagemA.setImage( imagem_a );
+				ivImagemB.setImage( imagem_b );
+				ivImagemC.setImage( imagem_c );
+				ivImagemD.setImage( imagem_d );
 
 				return super.call();
 			}
@@ -385,7 +459,9 @@ public class FormularioPublicacaoController implements Initializable {
         if( numero_portas != NAO_DEFINIDO ) {
             query_filtragem += " AND v.qtdPortas = " + numero_portas;
         }
-
+        
+        query_filtragem += " AND v.visivel = 1";
+        
         return query_filtragem;
 	}
 
@@ -491,8 +567,10 @@ public class FormularioPublicacaoController implements Initializable {
 
 			fileChooser.getExtensionFilters().addAll( filtroJPG, filtroJPEG );
 			File arquivoImagem = fileChooser.showOpenDialog(null);
-
-			try {
+			
+			if( arquivoImagem == null ) return;
+			
+			try {								
 				BufferedImage buffer_imagem = ImageIO.read(arquivoImagem);
 				Image imagem_selecionada = SwingFXUtils.toFXImage(buffer_imagem, null);
 				imagem_alvo.setImage( imagem_selecionada );
@@ -664,7 +742,7 @@ public class FormularioPublicacaoController implements Initializable {
         BigDecimal valorQuilometragemExcedida;
         int limiteQuilometragem;
         BigDecimal valorDiaria;
-        BigDecimal valorCombustivel;
+        //BigDecimal valorCombustivel = null;
 
 		try {
 
@@ -673,7 +751,10 @@ public class FormularioPublicacaoController implements Initializable {
 			valorQuilometragemExcedida = BigDecimal.valueOf( FormValidator.get_input_as_double( txtQuilometragemExcedida ) );
 			limiteQuilometragem = Integer.valueOf( txtLimiteQuilometragem.getText().trim() );
 			valorDiaria = BigDecimal.valueOf( FormValidator.get_input_as_double( txtValorDiaria ) );
-			valorCombustivel = BigDecimal.valueOf( FormValidator.get_input_as_double( txtValorCombustivel ) );
+
+			if( !txtValorCombustivel.getText().isEmpty() ) {
+				//valorCombustivel = BigDecimal.valueOf( FormValidator.get_input_as_double( txtValorCombustivel ) );
+			}
 
 		} catch( NumberFormatException e ) {
 
@@ -714,7 +795,11 @@ public class FormularioPublicacaoController implements Initializable {
 				publicacao_alvo.setValorQuilometragem( valorQuilometragemExcedida );
 				publicacao_alvo.setLimiteQuilometragem( limiteQuilometragem );
 				publicacao_alvo.setValorDiaria( valorDiaria );
-				publicacao_alvo.setValorCombustivel( valorCombustivel );
+
+				if( !txtValorCombustivel.getText().isEmpty() ) {
+					publicacao_alvo.setValorCombustivel( BigDecimal.valueOf( FormValidator.get_input_as_double( txtValorCombustivel ) ) );
+				}
+
 				publicacao_alvo.setDisponivelOnline( disponivelOnline );
 				publicacao_alvo.setIdStatusPublicacao( STATUS_PUBLICACAO_DISPONIVEL );
 				publicacao_alvo.setIdAgencia(id_agencia);

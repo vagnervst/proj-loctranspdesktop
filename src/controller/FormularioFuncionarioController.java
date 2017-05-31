@@ -2,6 +2,8 @@ package controller;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.Callable;
 
@@ -43,7 +45,8 @@ public class FormularioFuncionarioController implements Initializable {
 	Funcionario funcionario_selecionado = null;
 
 	Integer idEmpresa;
-
+	int id_funcionario;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -93,14 +96,14 @@ public class FormularioFuncionarioController implements Initializable {
 					}
 				});
 
-				int id_funcionario = Context.getIntData("idFuncionario");
+				id_funcionario = Context.getIntData("idFuncionario");
 
 				if( id_funcionario != -1 ) {
 					funcionario_selecionado = new Funcionario().buscar("id = ?", Arrays.asList( id_funcionario ), Funcionario.class).get(0);
 
 		            txtNomeFuncionario.setText( funcionario_selecionado.getNome() );
 		            txtTelefoneFuncionario.setText( funcionario_selecionado.getTelefone() );
-		            txtCredencialFuncionario.setText( funcionario_selecionado.getCredencial() );
+		            txtCredencialFuncionario.setText( funcionario_selecionado.getCredencial().split("@")[0] );
 		            txtCelularFuncionario.setText( funcionario_selecionado.getCelular() );
 		            txtEmailFuncionario.setText( funcionario_selecionado.getEmail() );
 
@@ -114,8 +117,63 @@ public class FormularioFuncionarioController implements Initializable {
 				return super.call();
 			}
 		});
+		
+		controle_permissoes();
 	}
 
+	public void controle_permissoes() {
+		if( Login.get_tipo_conta() == Login.FUNCIONARIO ) {
+			Funcionario funcionario = new Funcionario();
+			funcionario.setId( Login.get_id_usuario() );
+
+			funcionario.getPermissoes( new CustomCallable<List<Map>>() {
+
+				@Override
+				public List<Map> call() throws Exception {
+					// TODO Auto-generated method stub
+					List<Map> telas_permitidas = (List<Map>) getParametro();
+					
+					final int cod_tela_funcionarios = 1;
+                    
+                    boolean tela_funcionarios = false;
+                    
+					for( int i = 0; i < telas_permitidas.size(); ++i ) {
+
+						Map<String, Object> tela = telas_permitidas.get(i);
+						
+						int codigo_tela = ((int) tela.get("cod"));
+						
+						if( codigo_tela == cod_tela_funcionarios ) {
+							tela_funcionarios = true;
+							
+							if( tela.get("remocao") == null ) {
+								btnRemover.setDisable(true);							
+							}
+
+							if( tela.get("edicao") == null && id_funcionario != -1 ) {
+								btnSalvar.setDisable(true);
+							}
+							
+							if( tela.get("escrita") == null && id_funcionario == -1 ) {
+								btnSalvar.setDisable(true);
+							}
+							
+						}
+					}
+
+                    if( tela_funcionarios == false ) {
+                    	btnRemover.setDisable(true);
+                    	btnSalvar.setDisable(true);
+                    }
+                    
+                    
+					return super.call();
+				}
+
+			});
+		}
+	}
+	
 	private void set_status_formulario(boolean status) {
         txtNomeFuncionario.setDisable( !status );
         txtSenhaFuncionario.setDisable( !status );
@@ -166,14 +224,25 @@ public class FormularioFuncionarioController implements Initializable {
         Integer idAgencia = cbAgencia.getSelectionModel().getSelectedItem().getId();
         Integer idNivelAcesso = cbNivelAcesso.getSelectionModel().getSelectedItem().getId();
 
-        if( !senhaFuncionario.equals(confSenhaFuncionario) ) return;
-
-        String hash = BCrypt.hashpw(senhaFuncionario, BCrypt.gensalt());
-        hash = Login.get_hash_preparada(hash, "2y");
+        Funcionario funcionario = new Funcionario();
         
-		Funcionario funcionario = new Funcionario(nomeFuncionario, hash, credencialFuncionario,
-				telefoneFuncionario, celularFuncionario, emailFuncionario, idNivelAcesso, idAgencia, idEmpresa);
-
+        if( !senhaFuncionario.isEmpty() ) {
+        	if( !senhaFuncionario.equals(confSenhaFuncionario) ) return;
+        	
+        	String hash = BCrypt.hashpw(senhaFuncionario, BCrypt.gensalt());
+        	hash = Login.get_hash_preparada(hash, "2y");
+        	funcionario.setSenha(hash);        	
+        }                                      		
+		
+		funcionario.setNome(nomeFuncionario);
+		funcionario.setCredencial(credencialFuncionario);
+		funcionario.setTelefone(telefoneFuncionario);
+		funcionario.setCelular(celularFuncionario);
+		funcionario.setEmail(emailFuncionario);
+		funcionario.setIdNivelAcesso(idNivelAcesso);
+		funcionario.setIdAgencia(idAgencia);
+		funcionario.setIdEmpresa(idEmpresa);
+		
 		ThreadTask<Boolean> thread_salvar = new ThreadTask<Boolean>(new Callable<Boolean>() {
 
 			@Override
@@ -182,6 +251,7 @@ public class FormularioFuncionarioController implements Initializable {
 				if( funcionario_selecionado != null )
 				{
 					funcionario.setId( funcionario_selecionado.getId() );					
+					funcionario.setStatusOnline( null );
 					return funcionario.atualizar();
 				}
 				else

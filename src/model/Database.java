@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class Database {
 	private Connection conn = null;
-	private String host = "127.0.0.1", usuario = "root", senha = "root", banco = "dbcityshare";
 
 	public Database() {
 		this.abrirConexao();
@@ -26,7 +25,7 @@ public class Database {
 			e.printStackTrace();
 		}
 
-		String conexao = "jdbc:mysql://" + this.host + ":3306/" + this.banco + "?user=" + this.usuario + "&password=" + this.senha;
+		String conexao = "jdbc:mysql://" + Server.host + ":" + Server.portaBanco + "/" + Server.banco + "?user=" + Server.usuario + "&password=" + Server.senha;
 
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());

@@ -165,8 +165,7 @@ public class RelatorioPublicacaoController implements Initializable {
 					String nome_funcionario = (String) dados_relatorio_funcionario.get(i).get("nome");
 					Long qtd_publicacoes = (Long) dados_relatorio_funcionario.get(i).get("qtdPublicacoes");					
 					
-					XYChart.Data dados_funcionario = new XYChart.Data(nome_funcionario, qtd_publicacoes);
-					System.out.println( nome_funcionario + " : " + qtd_publicacoes );
+					XYChart.Data dados_funcionario = new XYChart.Data(nome_funcionario, qtd_publicacoes);					
 					estatisticas_funcionarios.getData().add( dados_funcionario );
 				}							
 								
@@ -199,14 +198,14 @@ public class RelatorioPublicacaoController implements Initializable {
 				
 				ObservableList<PieChart.Data> dados_grafico = FXCollections.observableArrayList();
 								
-				PieChart.Data publicacoes_disponiveis = new PieChart.Data("PublicaÃ§Ãµes DisponÃ­veis", dados_publicacoes.get("publicacoesDisponiveis"));								
+				PieChart.Data publicacoes_disponiveis = new PieChart.Data("Publicações Disponíveis", dados_publicacoes.get("publicacoesDisponiveis"));								
 				
-				PieChart.Data publicacoes_indisponiveis = new PieChart.Data("PublicaÃ§Ãµes IndisponÃ­veis", dados_publicacoes.get("publicacoesIndisponiveis"));				
+				PieChart.Data publicacoes_indisponiveis = new PieChart.Data("Publicações Indisponíveis", dados_publicacoes.get("publicacoesIndisponiveis"));				
 				
 				dados_grafico.addAll( publicacoes_disponiveis, publicacoes_indisponiveis );
 								
 				graficoPublicacoes.setData( dados_grafico );
-				graficoPublicacoes.setTitle("PublicaÃ§Ãµes DisponÃ­veis");				
+				graficoPublicacoes.setTitle("Publicações Disponíveis");				
 				
 				lblTotalPublicacoes.setText( String.valueOf( dados_publicacoes.get("publicacoesDisponiveis") ) );
 				lblPublicacoesIndisponiveis.setText( String.valueOf( dados_publicacoes.get("publicacoesIndisponiveis") ) );
