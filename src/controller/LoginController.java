@@ -37,9 +37,7 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		txtEmail.setText("funcionario@companyhost");
-		txtSenha.setText("123");
+		// TODO Auto-generated method stub		
 	}
 
 	@FXML public void login() {
